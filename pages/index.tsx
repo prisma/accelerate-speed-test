@@ -34,18 +34,25 @@ export default function Home() {
 
   async function runTest() {
     setIsRunning(true);
-    const stream = new EventSource("/api/stream");
-    stream.addEventListener("message", (message) => {
-      if (message.data.startsWith("withCache")) {
-        setCacheLatency(Number(message.data.split("|")[1]));
-      } else if (message.data.startsWith("withoutCache")) {
-        setWithoutCacheLatency(Number(message.data.split("|")[1]));
-      } else if (message.data.startsWith("end")) {
-        stream.close();
-        setCacheLatency(Number(message.data.split("|")[1]));
-        setWithoutCacheLatency(Number(message.data.split("|")[2]));
-      }
-    });
+
+    // SSE doesn't work on Vercel 😞
+    // const stream = new EventSource("/api/stream");
+    // stream.addEventListener("message", (message) => {
+    //   if (message.data.startsWith("withCache")) {
+    //     setCacheLatency(Number(message.data.split("|")[1]));
+    //   } else if (message.data.startsWith("withoutCache")) {
+    //     setWithoutCacheLatency(Number(message.data.split("|")[1]));
+    //   } else if (message.data.startsWith("end")) {
+    //     stream.close();
+    //     setCacheLatency(Number(message.data.split("|")[1]));
+    //     setWithoutCacheLatency(Number(message.data.split("|")[2]));
+    //   }
+    // });
+
+    const response = await fetch("/api/time");
+    const { withCache, withoutCache } = await response.json();
+    setCacheLatency(withCache);
+    setWithoutCacheLatency(withoutCache);
   }
 
   return (

@@ -8,24 +8,42 @@ export default async function handler(
   // preheat the cache 🔥
   await fetchSomeData(true);
 
+  const timeout = AbortSignal.timeout(5_000);
+
   const [withCache, withoutCache] = await Promise.all([
-    p50(() => fetchSomeData(true)),
-    p50(() => fetchSomeData(false)),
+    count(
+      () => fetchSomeData(true),
+      (duration) => {},
+      timeout
+    ),
+    count(
+      () => fetchSomeData(false),
+      (duration) => {},
+      timeout
+    ),
   ]);
 
   res.status(200).json({ withCache, withoutCache });
+}
+
+async function count(
+  fn: () => Promise<void>,
+  cb: (duration: number) => void,
+  signal: AbortSignal
+): Promise<number> {
+  const durations = new Array<number>();
+  while (!signal.aborted) {
+    const duration = await time(fn);
+    if (!signal.aborted) {
+      durations.push(duration);
+      cb(duration);
+    }
+  }
+  return durations.reduce((prev, curr) => prev + curr, 0) / durations.length;
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {
   const start = performance.now();
   await fn();
   return performance.now() - start;
-}
-
-async function p50(fn: () => Promise<unknown>): Promise<number> {
-  const results = new Array<number>();
-  while (results.length < 1) {
-    results.push(await time(fn));
-  }
-  return results.at(Math.floor(results.length * 0.5)) ?? 0;
 }
