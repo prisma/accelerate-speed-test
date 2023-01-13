@@ -1,0 +1,51 @@
+main {
+  display: grid;
+  gap: 4rem;
+  grid-template-areas: "title title" "cache noCache" "footer footer" "code code";
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: min-content;
+  margin: 4rem;
+}
+
+h1 {
+  grid-area: title;
+  text-align: center;
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+section h2 {
+  font-size: 1.5rem;
+}
+
+dd {
+  font-size: 2rem;
+  text-align: center;
+}
+
+dt {
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+footer {
+  grid-area: footer;
+  display: flex;
+  justify-content: center;
+}
+
+.code.code {
+  grid-area: code;
+  width: auto;
+  width: 22rem;
+  justify-self: center;
+}
+
+.code pre {
+  white-space: pre;
+}
