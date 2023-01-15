@@ -15,6 +15,7 @@ const ms = new Intl.NumberFormat("en-US", {
 
 const CODE = `
 await prisma.linkOpen.count({
+  cacheStrategy: { ttl: 3_600 },
   where: {
     link: {
       User: {
@@ -28,12 +29,14 @@ await prisma.linkOpen.count({
 `;
 
 export default function Home() {
-  const [isRunning, setIsRunning] = useState(false);
+  const [state, setState] = useState<"idle" | "running" | "complete" | "error">(
+    "idle"
+  );
   const [cacheLatency, setCacheLatency] = useState(0);
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
 
   async function runTest() {
-    setIsRunning(true);
+    setState("running");
 
     // SSE doesn't work on Vercel 😞
     // const stream = new EventSource("/api/stream");
@@ -49,10 +52,16 @@ export default function Home() {
     //   }
     // });
 
-    const response = await fetch("/api/time");
-    const { withCache, withoutCache } = await response.json();
-    setCacheLatency(withCache);
-    setWithoutCacheLatency(withoutCache);
+    try {
+      const response = await fetch("/api/time");
+      const { withCache, withoutCache } = await response.json();
+      setCacheLatency(withCache);
+      setWithoutCacheLatency(withoutCache);
+      setState("complete");
+    } catch (error) {
+      console.error(error);
+      setState("error");
+    }
   }
 
   return (
@@ -92,11 +101,15 @@ export default function Home() {
         <footer>
           <Button
             autoFocus
-            isDisabled={isRunning}
+            isDisabled={state !== "idle" && state !== "error"}
             onClick={runTest}
+            variant={state === "error" ? "negative" : "primary"}
             type="button"
           >
-            Run Test
+            {state === "idle" && "Run Test"}
+            {state === "running" && "Running Test..."}
+            {state === "complete" && "Complete"}
+            {state === "error" && "Try Again"}
           </Button>
         </footer>
         <Code className="code" value={CODE} />
