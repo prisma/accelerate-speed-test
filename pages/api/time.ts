@@ -1,10 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import { fetchSomeData } from "../../lib/queries";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export const config = {
+  runtime: "edge",
+};
+
+export default async function handler(req: NextRequest) {
   // preheat the cache 🔥
   await fetchSomeData(true);
   // cache store is non-blocking, so give it a second
@@ -17,7 +18,7 @@ export default async function handler(
     p50(() => fetchSomeData(false), timeout),
   ]);
 
-  res.status(200).json({ withCache, withoutCache });
+  return NextResponse.json({ withCache, withoutCache });
 }
 
 /**
@@ -40,7 +41,7 @@ async function p50(
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {
-  const start = performance.now();
+  const start = Date.now();
   await fn();
-  return performance.now() - start;
+  return Date.now() - start;
 }

@@ -1,38 +1,56 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest, NextResponse } from "next/server";
 import { fetchSomeData } from "../../lib/queries";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  res.writeHead(200, {
-    "Content-Encoding": "none",
-    "Content-Type": "text/event-stream",
-    Connection: "keep-alive",
-    "Cache-Control": "no-cache",
-  });
+export const config = {
+  runtime: "edge",
+};
 
+export default async function handler(req: NextRequest) {
   // preheat the cache 🔥
   await fetchSomeData(true);
   // cache store is non-blocking, so give it a second
   await new Promise((resolve) => setTimeout(resolve, 1_000));
 
-  const timeout = AbortSignal.timeout(10_000);
+  const timeout = AbortSignal.timeout(5_000);
 
-  const [withCache, withoutCache] = await Promise.all([
-    p50(
-      () => fetchSomeData(true),
-      (duration) => res.write(`data: withCache|${duration}\n\n`),
-      timeout
-    ),
-    p50(
-      () => fetchSomeData(false),
-      (duration) => res.write(`data: withoutCache|${duration}\n\n`),
-      timeout
-    ),
-  ]);
+  const encoder = new TextEncoder();
+  const body = new ReadableStream({
+    async start(controller) {
+      await Promise.all([
+        p50(
+          () => fetchSomeData(true),
+          (duration) => {
+            controller.enqueue(encoder.encode(`event: withCache\n`));
+            controller.enqueue(encoder.encode(`data: ${duration}\n\n`));
+          },
+          timeout
+        ),
+        p50(
+          () => fetchSomeData(false),
+          (duration) => {
+            controller.enqueue(encoder.encode(`event: withoutCache\n`));
+            controller.enqueue(encoder.encode(`data: ${duration}\n\n`));
+          },
+          timeout
+        ),
+      ]).then(async ([withCache, withoutCache]) => {
+        controller.enqueue(encoder.encode(`event: stop\n`));
+        controller.enqueue(
+          encoder.encode(`data: ${withCache}|${withoutCache}`)
+        );
+        controller.close();
+      });
+    },
+  });
 
-  res.write(`data: end|${withCache}|${withoutCache}`);
+  return new NextResponse(body, {
+    headers: {
+      "Content-Encoding": "none",
+      "Content-Type": "text/event-stream",
+      Connection: "keep-alive",
+      "Cache-Control": "no-cache",
+    },
+  });
 }
 
 /**
@@ -57,7 +75,7 @@ async function p50(
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {
-  const start = performance.now();
+  const start = Date.now();
   await fn();
-  return performance.now() - start;
+  return Date.now() - start;
 }
