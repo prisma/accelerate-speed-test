@@ -88,8 +88,8 @@ export default function Home() {
         <header>
           <Title>Accelerate speed test</Title>
           <p>
-            Cache your queries with a line of code. The test will run for
-            ~5seconds. See how many requests Accelerate can process sequentially
+            Cache your queries with a line of code. The test will run for ~5
+            seconds. See how many requests Accelerate can process sequentially
             over that time.
           </p>
         </header>
@@ -102,7 +102,7 @@ export default function Home() {
             type="button"
           >
             {state === "idle" && "Run Accelerate speed test"}
-            {state === "running" && "Running Accelerate Speed test"}
+            {state === "running" && "Running Accelerate speed test"}
             {state === "complete" && "Run another test"}
             {state === "error" && "Try Again"}
           </Button>
