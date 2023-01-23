@@ -23,7 +23,7 @@ export async function sendAnalytics(
     const timestamp = Date.now() * 1_000_000;
     const tag = Object.entries(tags)
       .filter(([, value]) => Boolean(value))
-      .map(([key, value]) => `${key}="${value}"`)
+      .map(([key, value]) => `${key}=${value.replace(" ", `\ `)}`)
       .join(",");
     const field = Object.entries(fields)
       .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
