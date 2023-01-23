@@ -22,15 +22,11 @@ export async function sendAnalytics(
   if (ENDPOINT) {
     const timestamp = Date.now() * 1_000_000;
     const tag = Object.entries(tags)
-      .map(
-        ([key, value]) =>
-          `${encodeURIComponent(key)}="${encodeURIComponent(value)}"`
-      )
+      .filter(([, value]) => Boolean(value))
+      .map(([key, value]) => `${key}="${value}"`)
       .join(",");
     const field = Object.entries(fields)
-      .map(
-        ([key, value]) => `${encodeURIComponent(key)}=${JSON.stringify(value)}`
-      )
+      .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
       .join(",");
     const line = `${measure}${tag ? `,` : ""}${tag} ${field} ${timestamp}`;
     console.log(line);
