@@ -32,7 +32,7 @@ export async function sendAnalytics(
         ([key, value]) => `${encodeURIComponent(key)}=${JSON.stringify(value)}`
       )
       .join(",");
-    const line = `${measure} ${tag} ${field} ${timestamp}`;
+    const line = `${measure}${tag ? `,` : ""}${tag} ${field} ${timestamp}`;
     console.log(line);
     const response = await fetch(ENDPOINT, {
       method: "post",
