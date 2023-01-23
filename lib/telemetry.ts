@@ -2,8 +2,20 @@ const ENDPOINT = process.env.GRAFANA_ENDPOINT;
 const USER_ID = process.env.GRAFANA_USER_ID;
 const API_KEY = process.env.GRAFANA_API_KEY;
 
+/**
+ * Sends analytics to Grafana Cloud using InfluxDB line protocol.
+ * Grafana Cloud does not support pushing analytics via OpenTelemetry HTTP.
+ * @see https://grafana.com/docs/grafana-cloud/data-configuration/metrics/metrics-influxdb/push-from-telegraf/#pushing-from-applications-directly
+ * @see https://docs.influxdata.com/influxdb/v2.6/reference/syntax/line-protocol/
+ * @param measure The name of the analytics event
+ * @param fields Values recordings
+ * @param tags Attributes to index
+ */
 export async function sendAnalytics(
-  measure: string,
+  measure:
+    | "accelerate.demo.ping"
+    | "accelerate.demo.stream"
+    | "accelerate.demo.time",
   fields: Record<string, number>,
   tags: Record<string, string> = {}
 ): Promise<void> {
@@ -16,9 +28,12 @@ export async function sendAnalytics(
       )
       .join(",");
     const field = Object.entries(fields)
-      .map(([key, value]) => `${encodeURIComponent(key)}="${value}"`)
+      .map(
+        ([key, value]) => `${encodeURIComponent(key)}=${JSON.stringify(value)}`
+      )
       .join(",");
-    const line = `${measure},${tag} ${field} ${timestamp}`;
+    const line = `${measure} ${tag} ${field} ${timestamp}`;
+    console.log(line);
     const response = await fetch(ENDPOINT, {
       method: "post",
       body: line,
@@ -28,7 +43,9 @@ export async function sendAnalytics(
       },
     });
 
-    const data = await response.json();
-    console.log(response.status, data);
+    if (!response.ok) {
+      const data = await response.text();
+      console.error(response.status, data);
+    }
   }
 }
