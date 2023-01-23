@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { fetchSomeData } from "../../lib/queries";
+import { sendAnalytics } from "../../lib/telemetry";
 
 export const config = {
   runtime: "edge",
 };
 
-export default async function handler(req: NextRequest) {
+export default async function handler(req: NextRequest, event: NextFetchEvent) {
   // preheat the cache 🔥
   await fetchSomeData(true);
   // cache store is non-blocking, so give it a second
@@ -38,7 +39,15 @@ export default async function handler(req: NextRequest) {
         controller.enqueue(
           encoder.encode(`data: ${withCache}|${withoutCache}`)
         );
+        event.waitUntil(
+          sendAnalytics(
+            "accelerate.demo.stream",
+            { withCache, withoutCache },
+            { ...req.geo }
+          )
+        );
         controller.close();
+        return [withCache, withoutCache];
       });
     },
   });
