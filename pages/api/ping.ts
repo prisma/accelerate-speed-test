@@ -1,3 +1,4 @@
+import { geolocation } from "@vercel/edge";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { fetchSomeData } from "../../lib/queries";
 import { sendAnalytics } from "../../lib/telemetry";
@@ -9,7 +10,7 @@ export const config = {
 export default async function handler(req: NextRequest, event: NextFetchEvent) {
   const duration = await time(() => fetchSomeData(true));
   event.waitUntil(
-    sendAnalytics("accelerate.demo.ping", { duration }, { ...req.geo })
+    sendAnalytics("accelerate.demo.ping", { duration }, { ...geolocation(req) })
   );
   return NextResponse.json({ duration });
 }
