@@ -1,4 +1,3 @@
-import { geolocation } from "@vercel/edge";
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { fetchSomeData } from "../../lib/queries";
 import { sendAnalytics } from "../../lib/telemetry";
@@ -44,7 +43,7 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
           sendAnalytics(
             "accelerate.demo.stream",
             { withCache, withoutCache },
-            { ...req.geo, colo: geolocation(req).region ?? "" }
+            req
           )
         );
         controller.close();

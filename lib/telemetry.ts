@@ -1,3 +1,6 @@
+import { geolocation } from "@vercel/edge";
+import { NextRequest } from "next/server";
+
 const ENDPOINT = process.env.GRAFANA_ENDPOINT;
 const USER_ID = process.env.GRAFANA_USER_ID;
 const API_KEY = process.env.GRAFANA_API_KEY;
@@ -17,11 +20,18 @@ export async function sendAnalytics(
     | "accelerate.demo.stream"
     | "accelerate.demo.time",
   fields: Record<string, number>,
+  req: NextRequest,
   tags: Record<string, string> = {}
 ): Promise<void> {
   if (ENDPOINT) {
+    const { region: vercelEdgeRegion = "" } = geolocation(req);
     const timestamp = Date.now() * 1_000_000;
-    const tag = Object.entries(tags)
+    const defaultTags = {
+      ...req.geo,
+      vercelEdgeRegion,
+      colo: vercelEdgeRegion.replace(/[0-9]+/, "").toUpperCase(),
+    };
+    const tag = Object.entries({ ...defaultTags, ...tags })
       .filter(([, value]) => Boolean(value))
       .map(([key, value]) => `${key}=${value.replace(" ", `\ `)}`)
       .join(",");
