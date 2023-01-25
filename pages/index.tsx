@@ -14,6 +14,12 @@ const ms = new Intl.NumberFormat("en-US", {
   unitDisplay: "short",
 });
 
+const time = new Intl.DateTimeFormat('default', {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: false,
+});
+
 const CODE_CACHE = `
 await prisma.linkOpen.count({
   cacheStrategy: { ttl: 3_600 },
@@ -44,6 +50,7 @@ await prisma.linkOpen.count({
 `;
 
 export default function Home() {
+  const [history, setHistory] = useState<Record[]>([]);
   const [state, setState] = useState<'idle' | 'running' | 'complete' | 'error'>(
     'idle'
   );
@@ -86,7 +93,26 @@ export default function Home() {
             case 'stop': {
               setWithoutCacheLatency(data.withoutCache);
               setCacheLatency(data.withCache);
-              console.log('geo?', data.ctx);
+              setHistory((prev) =>
+                [
+                  {
+                    time: time.format(new Date()),
+                    location:
+                      `${[data.ctx.geo?.city, data.ctx.geo?.country]
+                        .filter(Boolean)
+                        .join(', ')}` || `Not available`,
+                    withCache: {
+                      latency: ms.format(data.withCache),
+                      qpm: num.format((1_000 / data.withCache) * 60),
+                    },
+                    withoutCache: {
+                      latency: ms.format(data.withoutCache),
+                      qpm: num.format((1_000 / data.withoutCache) * 60),
+                    },
+                    speedup: num.format(data.withoutCache / data.withCache),
+                  },
+                ].concat(prev)
+              );
               break;
             }
             case 'withCache': {
@@ -183,7 +209,54 @@ export default function Home() {
         </section>
         <section className="results">
           <h2>Speed test history</h2>
-          <p>No tests ran yet</p>
+          {history.length === 0 ? (
+            <p>No tests ran yet</p>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th id="time">Time</th>
+                  <th id="location">Location</th>
+                  <th id="accelerate-qpm">Accelerate #qpm</th>
+                  <th id="uncached-qpm">Uncached #qpm</th>
+                  <th id="accelerate-latency">Accelerate latency</th>
+                  <th id="uncached-latency">Uncached latency</th>
+                  <th id="speedup">Speedup</th>
+                </tr>
+              </thead>
+              <tbody>
+                {history.map((record, i) => (
+                  <tr key={i}>
+                    <td headers="time">{record.time}</td>
+                    <td title={record.location} headers="location">
+                      {record.location}
+                    </td>
+                    <td headers="accelerate-qpm">
+                      <span className="badge green">
+                        {record.withCache.qpm}
+                      </span>
+                    </td>
+                    <td headers="uncached-qpm">
+                      <span className="badge red">
+                        {record.withoutCache.qpm}
+                      </span>
+                    </td>
+                    <td headers="accelerate-latency">
+                      <span className="badge green">
+                        {record.withCache.latency}
+                      </span>
+                    </td>
+                    <td headers="uncached-latency">
+                      <span className="badge red">
+                        {record.withoutCache.latency}
+                      </span>
+                    </td>
+                    <td headers="speedup">{record.speedup}x</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </section>
       </main>
     </>
@@ -212,4 +285,18 @@ type FinishResult = {
         | undefined;
     };
   };
-}; 
+};
+
+type Record = {
+  time: string;
+  location: string | 'not available';
+  withCache: {
+    latency: string;
+    qpm: string;
+  };
+  withoutCache: {
+    latency: string;
+    qpm: string;
+  };
+  speedup: string;
+};

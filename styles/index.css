@@ -1,4 +1,5 @@
 main {
+  padding: 0 1rem;
   display: grid;
   font-family: Inter;
   gap: 3.5rem;
@@ -17,6 +18,7 @@ main {
 
 @media (min-width: 64rem) {
   main {
+    padding: 0;
     grid-template-areas:
       "nav nav"
       "header header"
@@ -34,7 +36,6 @@ nav {
   flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  padding: 0 1rem;
 }
 
 nav .badge {
@@ -75,9 +76,11 @@ section.card {
   border: 1px solid #edf2f7;
   border-radius: 0.375rem;
   padding: 2rem 1.5rem;
+  color: #2D3748;
 }
 
 section h2 {
+  color: #2D3748;
   font-size: 1.5rem;
   line-height: 1.16;
   font-weight: 600;
@@ -101,11 +104,13 @@ dt {
 }
 
 section .badge {
+  display: inline-block;
+  white-space: nowrap;
   align-self: baseline;
   padding: 0 0.375rem;
   border-radius: 2px;
   font-size: 11px;
-  line-height: 1.6;
+  line-height: 1.7;
   text-transform: uppercase;
   font-weight: 600;
 }
@@ -118,6 +123,11 @@ section .badge.green {
 section .badge.gray {
   background: #f7fafc;
   color: #2d3748;
+}
+
+section .badge.red {
+  background: #FFF5F5;
+  color: #9B2C2C;
 }
 
 .code {
@@ -134,3 +144,52 @@ section.results {
   grid-area: results;
   align-items: flex-start;
 }
+
+section.results p {
+  color: #718096;
+}
+
+section.results table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+section.results table tr {
+  border-bottom: 1px solid #E2E8F0;
+}
+
+section.results table th,
+section.results table td {
+  padding: 1.25rem 0.5rem 1.25rem 0; 
+}
+
+section.results table th {
+  color: #1A202C;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+section.results table td {
+  color: #2D3748;
+  line-height: 1;
+}
+
+section.results table th#time,
+section.results table th#speedup {
+  width: 8%;
+}
+
+section.results table th#location {
+  width: 20%;
+}
+
+section.results table td[headers="location"] {
+  color: #718096;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
