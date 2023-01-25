@@ -10,7 +10,11 @@ export const config = {
 export default async function handler(req: NextRequest, event: NextFetchEvent) {
   const duration = await time(() => fetchSomeData(true));
   event.waitUntil(
-    sendAnalytics("accelerate.demo.ping", { duration }, { ...geolocation(req) })
+    sendAnalytics(
+      "accelerate.demo.ping",
+      { duration },
+      { ...req.geo, colo: geolocation(req).region ?? "" }
+    )
   );
   return NextResponse.json({ duration });
 }

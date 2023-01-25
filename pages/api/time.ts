@@ -24,7 +24,7 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
     sendAnalytics(
       "accelerate.demo.time",
       { withCache, withoutCache },
-      { ...geolocation(req) }
+      { ...req.geo, colo: geolocation(req).region ?? "" }
     )
   );
 
