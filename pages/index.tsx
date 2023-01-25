@@ -81,33 +81,39 @@ export default function Home() {
           <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
           <span className="badge">Early Access</span>
           <span style={{ flex: 1 }}></span>
-          <a href="https://www.prisma.io/data-platform/accelerate">
-            Learn more
+          <a
+            href="https://www.prisma.io/data-platform/accelerate"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button variant="secondary">Join the waitlist</Button>
           </a>
         </nav>
         <header>
-          <Title>Accelerate speed test</Title>
+          <Title titleProps={{ style: { fontSize: `2rem` } }}>
+            Accelerate Speed test
+          </Title>
           <p>
             Cache your queries with a line of code. The test will run for ~5
             seconds. See how many requests Accelerate can process sequentially
             over that time.
           </p>
         </header>
-        <section style={{ gridArea: "action" }}>
+        <section style={{ gridArea: 'action' }}>
           <Button
             autoFocus
-            isDisabled={state === "running"}
+            isDisabled={state === 'running'}
             onClick={runTest}
-            variant={state === "error" ? "negative" : "primary"}
+            variant={state === 'error' ? 'negative' : 'primary'}
             type="button"
           >
-            {state === "idle" && "Run Accelerate speed test"}
-            {state === "running" && "Running Accelerate speed test"}
-            {state === "complete" && "Run another test"}
-            {state === "error" && "Try Again"}
+            {state === 'idle' && 'Run Accelerate speed test'}
+            {state === 'running' && 'Running Accelerate speed test'}
+            {state === 'complete' && 'Run another test'}
+            {state === 'error' && 'Try Again'}
           </Button>
         </section>
-        <section className="card" style={{ gridArea: "cache" }}>
+        <section className={`card ${state}`} style={{ gridArea: 'cache' }}>
           <h2>✅ With Accelerate</h2>
           <dl>
             <dd>{num.format((1_000 / cacheLatency) * 60)}</dd>
@@ -120,7 +126,7 @@ export default function Home() {
           <span className="badge green">Cached query</span>
           <Code className="code" value={CODE_CACHE} />
         </section>
-        <section className="card" style={{ gridArea: "noCache" }}>
+        <section className={`card ${state}`} style={{ gridArea: 'noCache' }}>
           <h2>❌ Without Accelerate</h2>
           <dl>
             <dd>{num.format((1_000 / withoutCacheLatency) * 60)}</dd>
