@@ -41,7 +41,13 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
           encoder.encode(
             `${JSON.stringify({
               event: 'stop',
-              data: { withCache: withCache, withoutCache: withoutCache },
+              data: {
+                withCache: withCache,
+                withoutCache: withoutCache,
+                ctx: {
+                  geo: req.geo,
+                },
+              },
             })}\n\n`
           )
         );

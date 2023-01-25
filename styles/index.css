@@ -7,7 +7,8 @@ main {
     "header"
     "action"
     "cache"
-    "noCache";
+    "noCache"
+    "results";
   grid-template-columns: 1fr;
   grid-auto-rows: min-content;
   max-width: 64rem;
@@ -20,7 +21,8 @@ main {
       "nav nav"
       "header header"
       "action action"
-      "cache noCache";
+      "cache noCache"
+      "results results";
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -126,4 +128,9 @@ section .badge.gray {
 
 .code pre {
   white-space: pre;
+}
+
+section.results {
+  grid-area: results;
+  align-items: flex-start;
 }

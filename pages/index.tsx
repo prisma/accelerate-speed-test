@@ -86,6 +86,7 @@ export default function Home() {
             case 'stop': {
               setWithoutCacheLatency(data.withoutCache);
               setCacheLatency(data.withCache);
+              console.log('geo?', data.ctx);
               break;
             }
             case 'withCache': {
@@ -180,6 +181,10 @@ export default function Home() {
           <span className="badge gray">Uncached query</span>
           <Code className="code" value={CODE_NO_CACHE} />
         </section>
+        <section className="results">
+          <h2>Speed test history</h2>
+          <p>No tests ran yet</p>
+        </section>
       </main>
     </>
   );
@@ -195,5 +200,16 @@ type FinishResult = {
   data: {
     withCache: number;
     withoutCache: number;
+    ctx: {
+      geo:
+        | {
+            city?: string | undefined;
+            country?: string | undefined;
+            region?: string | undefined;
+            latitude?: string | undefined;
+            longitude?: string | undefined;
+          }
+        | undefined;
+    };
   };
 }; 
