@@ -51,61 +51,54 @@ export default function Home() {
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
 
   async function runTest() {
+    setCacheLatency(0);
+    setWithoutCacheLatency(0);
     setState('running');
 
-    try {
-      const response = await fetch('/api/time');
-      const { withCache, withoutCache } = await response.json();
-      setCacheLatency(withCache);
-      setWithoutCacheLatency(withoutCache);
-      setState('complete');
-    } catch (error) {
-      console.error(error);
-      setState('error');
+    async function* readStream(stream: ReadableStream<Uint8Array>) {
+      const reader = stream.getReader();
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) return;
+          const decoded = new TextDecoder().decode(value);
+          try {
+            const result = JSON.parse(decoded.trim()) as
+              | RunningResult
+              | FinishResult;
+            yield result;
+          } catch {
+            // continue
+          }
+        }
+      } finally {
+        reader.releaseLock();
+      }
     }
-  }
-
-  async function runStreamTest() {
-    setState('running');
-
     try {
-      await fetch('/api/stream').then((response) => {
-        const reader = response.body?.getReader();
-        reader
-          ?.read()
-          .then(function processData({
-            done,
-            value,
-          }): Promise<void> | undefined {
-            if (done) {
-              setState('complete');
-              return;
+      await fetch('/api/stream').then(async (response) => {
+        if (!response.body) {
+          setState('error');
+          return;
+        }
+        for await (const { event, data } of readStream(response.body)) {
+          switch (event) {
+            case 'stop': {
+              setWithoutCacheLatency(data.withoutCache);
+              setCacheLatency(data.withCache);
+              break;
             }
-            const decoded = new TextDecoder().decode(value);
-            try {
-              const result = JSON.parse(decoded.trim()) as
-                | RunningResult
-                | FinishResult;
-              switch (result.event) {
-                case 'stop': {
-                  setWithoutCacheLatency(result.data.withoutCache);
-                  setCacheLatency(result.data.withCache);
-                  break;
-                }
-                case 'withCache': {
-                  setCacheLatency(result.data);
-                  break;
-                }
-                case 'withoutCache': {
-                  setWithoutCacheLatency(result.data);
-                  break;
-                }
-              }
-            } catch (error) {
-              // silently continue
+            case 'withCache': {
+              setCacheLatency(data);
+              break;
             }
-            return reader?.read().then(processData);
-          });
+            case 'withoutCache': {
+              setWithoutCacheLatency(data);
+              break;
+            }
+          }
+        }
+        setState('complete');
       });
     } catch (error) {
       console.error(error);
@@ -151,7 +144,7 @@ export default function Home() {
           <Button
             autoFocus
             isDisabled={state === 'running'}
-            onClick={runStreamTest}
+            onClick={runTest}
             variant={state === 'error' ? 'negative' : 'primary'}
             type="button"
           >
