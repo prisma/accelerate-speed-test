@@ -44,24 +44,72 @@ await prisma.linkOpen.count({
 `;
 
 export default function Home() {
-  const [state, setState] = useState<"idle" | "running" | "complete" | "error">(
-    "idle"
+  const [state, setState] = useState<'idle' | 'running' | 'complete' | 'error'>(
+    'idle'
   );
   const [cacheLatency, setCacheLatency] = useState(0);
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
 
   async function runTest() {
-    setState("running");
+    setState('running');
 
     try {
-      const response = await fetch("/api/time");
+      const response = await fetch('/api/time');
       const { withCache, withoutCache } = await response.json();
       setCacheLatency(withCache);
       setWithoutCacheLatency(withoutCache);
-      setState("complete");
+      setState('complete');
     } catch (error) {
       console.error(error);
-      setState("error");
+      setState('error');
+    }
+  }
+
+  async function runStreamTest() {
+    setState('running');
+
+    try {
+      await fetch('/api/stream').then((response) => {
+        const reader = response.body?.getReader();
+        reader
+          ?.read()
+          .then(function processData({
+            done,
+            value,
+          }): Promise<void> | undefined {
+            if (done) {
+              setState('complete');
+              return;
+            }
+            const decoded = new TextDecoder().decode(value);
+            try {
+              const result = JSON.parse(decoded.trim()) as
+                | RunningResult
+                | FinishResult;
+              switch (result.event) {
+                case 'stop': {
+                  setWithoutCacheLatency(result.data.withoutCache);
+                  setCacheLatency(result.data.withCache);
+                  break;
+                }
+                case 'withCache': {
+                  setCacheLatency(result.data);
+                  break;
+                }
+                case 'withoutCache': {
+                  setWithoutCacheLatency(result.data);
+                  break;
+                }
+              }
+            } catch (error) {
+              // silently continue
+            }
+            return reader?.read().then(processData);
+          });
+      });
+    } catch (error) {
+      console.error(error);
+      setState('error');
     }
   }
 
@@ -103,7 +151,7 @@ export default function Home() {
           <Button
             autoFocus
             isDisabled={state === 'running'}
-            onClick={runTest}
+            onClick={runStreamTest}
             variant={state === 'error' ? 'negative' : 'primary'}
             type="button"
           >
@@ -143,3 +191,16 @@ export default function Home() {
     </>
   );
 }
+
+type RunningResult = {
+  event: 'withCache' | 'withoutCache';
+  data: number;
+};
+
+type FinishResult = {
+  event: 'stop';
+  data: {
+    withCache: number;
+    withoutCache: number;
+  };
+}; 

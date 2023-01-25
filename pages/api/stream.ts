@@ -21,27 +21,33 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
         p50(
           () => fetchSomeData(true),
           (duration) => {
-            controller.enqueue(encoder.encode(`event: withCache\n`));
-            controller.enqueue(encoder.encode(`data: ${duration}\n\n`));
+            controller.enqueue(
+              encoder.encode(`{"event":"withCache","data":${duration}}\n\n`)
+            );
           },
           timeout
         ),
         p50(
           () => fetchSomeData(false),
           (duration) => {
-            controller.enqueue(encoder.encode(`event: withoutCache\n`));
-            controller.enqueue(encoder.encode(`data: ${duration}\n\n`));
+            controller.enqueue(
+              encoder.encode(`{"event":"withoutCache","data":${duration}}\n\n`)
+            );
           },
           timeout
         ),
       ]).then(async ([withCache, withoutCache]) => {
-        controller.enqueue(encoder.encode(`event: stop\n`));
         controller.enqueue(
-          encoder.encode(`data: ${withCache}|${withoutCache}`)
+          encoder.encode(
+            `${JSON.stringify({
+              event: 'stop',
+              data: { withCache: withCache, withoutCache: withoutCache },
+            })}\n\n`
+          )
         );
         event.waitUntil(
           sendAnalytics(
-            "accelerate.demo.stream",
+            'accelerate.demo.stream',
             { withCache, withoutCache },
             { ...req.geo }
           )
@@ -54,10 +60,10 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
 
   return new NextResponse(body, {
     headers: {
-      "Content-Encoding": "none",
-      "Content-Type": "text/event-stream",
-      Connection: "keep-alive",
-      "Cache-Control": "no-cache",
+      'Content-Encoding': 'none',
+      'Content-Type': 'text/event-stream',
+      Connection: 'keep-alive',
+      'Cache-Control': 'no-cache',
     },
   });
 }
@@ -88,3 +94,4 @@ async function time(fn: () => Promise<unknown>): Promise<number> {
   await fn();
   return Date.now() - start;
 }
+
