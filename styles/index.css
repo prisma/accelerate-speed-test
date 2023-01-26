@@ -13,7 +13,7 @@ main {
   grid-template-columns: 1fr;
   grid-auto-rows: min-content;
   max-width: 64rem;
-  margin: 1.875rem auto;
+  margin: 1.875rem auto 6.5rem auto;
 }
 
 @media (min-width: 64rem) {

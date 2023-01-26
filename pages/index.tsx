@@ -162,9 +162,8 @@ export default function Home() {
             Accelerate Speed test
           </Title>
           <p>
-            Cache your queries with a line of code. The test will run for ~5
-            seconds. See how many requests Accelerate can process sequentially
-            over that time.
+            The test will run for ~5 seconds. See how many requests Accelerate
+            can process sequentially over that time.
           </p>
         </header>
         <section style={{ gridArea: 'action' }}>
@@ -204,7 +203,7 @@ export default function Home() {
             <dd>{ms.format(withoutCacheLatency)}</dd>
             <dt>latency</dt>
           </dl>
-          <span className="badge gray">Uncached query</span>
+          <span className="badge gray">Non-cached query</span>
           <Code className="code" value={CODE_NO_CACHE} />
         </section>
         <section className="results">
@@ -218,9 +217,9 @@ export default function Home() {
                   <th id="time">Time</th>
                   <th id="location">Location</th>
                   <th id="accelerate-qpm">Accelerate #qpm</th>
-                  <th id="uncached-qpm">Uncached #qpm</th>
+                  <th id="non-cached-qpm">Non-cached #qpm</th>
                   <th id="accelerate-latency">Accelerate latency</th>
-                  <th id="uncached-latency">Uncached latency</th>
+                  <th id="non-cached-latency">Non-cached latency</th>
                   <th id="speedup">Speedup</th>
                 </tr>
               </thead>
@@ -236,7 +235,7 @@ export default function Home() {
                         {record.withCache.qpm}
                       </span>
                     </td>
-                    <td headers="uncached-qpm">
+                    <td headers="non-cached-qpm">
                       <span className="badge red">
                         {record.withoutCache.qpm}
                       </span>
@@ -246,7 +245,7 @@ export default function Home() {
                         {record.withCache.latency}
                       </span>
                     </td>
-                    <td headers="uncached-latency">
+                    <td headers="non-cached-latency">
                       <span className="badge red">
                         {record.withoutCache.latency}
                       </span>
