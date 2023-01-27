@@ -2,7 +2,7 @@
 
 This app demonstrates the performance benefits of [Accelerate](https://www.prisma.io/data-platform/accelerate), a new Early Access product by Prisma. Accelerate provides a global cache with built-in connection pooling.
 
-The Accelerate Speed Test is a Next.js app using Edge API Routes to serve cached at the edge. When the speed test begins it will start two concurrent tests, one with cache and one without, that will each run as many sequential Prisma `count` operations as they can. The results are streamed to the UI and displayed for comparison.
+The Accelerate Speed Test is a Next.js app using Edge API Routes to serve cached data at the edge. When the speed test begins it will start two concurrent tests, one with cache and one without, that will each run as many sequential Prisma `count` operations as they can. The results are streamed to the UI and displayed for comparison.
 
 ## Setup
 
