@@ -92,8 +92,7 @@ section.card.running dl {
 }
 
 section.card.running dd {
-  animation: flash 2s linear infinite;
-  transform-origin: 50% 50%;
+  animation: flash 1s linear infinite;
 }
 
 dd {
@@ -199,24 +198,8 @@ section.results table td[headers="location"] {
 }
 
 @keyframes flash {
-   0% {
-    opacity: 1;
-  }
-  12.5% {
-    opacity: 0;
-  }
-  25% {
-    opacity: 1
-  }
-  37.5% {
-    opacity: 0
-  }
-  50% {
-    opacity: 1
-  }
-  100% {
-    opacity: 1
-  }
+	0% { opacity: 1; } 
+	50% { opacity: .1; } 
+	100% { opacity: 1; }
 }
-
 
