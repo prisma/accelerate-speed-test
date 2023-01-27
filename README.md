@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Accelerate Speed Test
 
-## Getting Started
+This app demonstrates the performance benefits of [Accelerate](https://www.prisma.io/data-platform/accelerate), a new Early Access product by Prisma. Accelerate provides a global cache with built-in connection pooling.
 
-First, run the development server:
+The Accelerate Speed Test is a Next.js app using Edge API Routes to serve cached at the edge. When the speed test begins it will start two concurrent tests, one with cache and one without, that will each run as many sequential Prisma `count` operations as they can. The results are streamed to the UI and displayed for comparison.
 
-```bash
-npm run dev
-# or
-yarn dev
+## Setup
+
+To run the Accelerate Speed Test locally or deploy it yourself, you'll first need an invitation to Accelerate Early Access. [Join the waitlist](https://www.prisma.io/data-platform/accelerate) if you haven't already.
+
+Next, you'll need a database. The Prisma Schema in this repository uses PostgreSQL, but you can substitute it with another database if desired. Create a new Accelerate project for the database to retrieve an Accelerate connection string.
+
+Once you have an Accelerate connection string, create a `.env` file with `DATABASE_URL` set to your direct database connection and `ACCELERATE_URL` set to the Accelerate connection string. This will allow you to push schema changes to your database directly while using Accelerate in the app. Run `npx prisma db push` to sync the schema changes with your database.
+
+```
+DATABASE_URL="postgresql://..."
+ACCELERATE_URL="prisma://accelerate.prisma.cool..."
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You should now be ready to start the app with `npm run dev`. Since the speed test runs a count operation, it can be helpful to load your database with a number of fake records. We used 500,000 LinkOpen entries, but the performance difference gets more dramatic as the number climbs. The more records you add, the more the database has to work to count them, but cache hits will avoid the database altogether and maintain a consistent latency regardless. The latency is also affected by the app's distance from the database. The cache being at the edge maintains stable performance for cache hits regardless of the database proximity.
