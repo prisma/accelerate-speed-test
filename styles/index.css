@@ -92,10 +92,8 @@ section.card.running dl {
 }
 
 section.card.running dd {
-  animation-name: flash;
-  animation-duration: 2s;
-  animation-fill-mode: both;
-  animation-iteration-count: infinite;
+  animation: flash1 2s linear infinite;
+  transform-origin: 50% 50%;
 }
 
 dd {
@@ -200,27 +198,38 @@ section.results table td[headers="location"] {
   text-overflow: ellipsis;
 }
 
-@keyframes flash {
-  0% {
-    opacity: 1;
+@keyframes flash1 {
+  from,
+  50%,
+  to {
+    opacity: 1
   }
-  12.5% {
-    opacity: 0.2;
-  }
-  25% {
-    opacity: 1;
-  }
-  37.5% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
+
+  25%,
+  75% {
+    opacity: 0
   }
 }
 
-.flash {
-  animation-name: flash;
+@keyframes flash {
+   0% {
+    opacity: 1;
+  }
+  12.5% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1
+  }
+  37.5% {
+    opacity: 0
+  }
+  50% {
+    opacity: 1
+  }
+  100% {
+    opacity: 1
+  }
 }
+
+
