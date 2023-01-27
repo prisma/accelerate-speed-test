@@ -170,7 +170,7 @@ export default function Home() {
           <Button
             autoFocus
             isDisabled={state === 'running'}
-            onClick={runTest}
+            onPress={runTest}
             variant={state === 'error' ? 'negative' : 'primary'}
             type="button"
           >
