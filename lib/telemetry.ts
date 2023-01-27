@@ -33,7 +33,7 @@ export async function sendAnalytics(
     };
     const tag = Object.entries({ ...defaultTags, ...tags })
       .filter(([, value]) => Boolean(value))
-      .map(([key, value]) => `${key}=${value.replace(" ", `\ `)}`)
+      .map(([key, value]) => `${key}=${value.replaceAll(" ", `\ `)}`)
       .join(",");
     const field = Object.entries(fields)
       .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
