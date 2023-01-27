@@ -91,6 +91,13 @@ section.card.running dl {
   color: #718096;
 }
 
+section.card.running dd {
+  animation-name: flash;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+
 dd {
   font-size: 2.5rem;
   line-height: 1.2;
@@ -193,3 +200,27 @@ section.results table td[headers="location"] {
   text-overflow: ellipsis;
 }
 
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  12.5% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 1;
+  }
+  37.5% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.flash {
+  animation-name: flash;
+}
