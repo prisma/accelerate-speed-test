@@ -91,6 +91,10 @@ section.card.running dl {
   color: #718096;
 }
 
+section.card.running dd {
+  animation: flash 1s linear infinite;
+}
+
 dd {
   font-size: 2.5rem;
   line-height: 1.2;
@@ -191,5 +195,11 @@ section.results table td[headers="location"] {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+@keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .1; } 
+	100% { opacity: 1; }
 }
 
