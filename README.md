@@ -14,7 +14,7 @@ Once you have an Accelerate connection string, create a `.env` file with `DATABA
 
 ```
 DATABASE_URL="postgresql://..."
-ACCELERATE_URL="prisma://accelerate.prisma.cool..."
+ACCELERATE_URL="prisma://accelerate.prisma-data.net..."
 ```
 
 You should now be ready to start the app with `npm run dev`. Since the speed test runs a count operation, it can be helpful to load your database with a number of fake records. We used 500,000 LinkOpen entries, but the performance difference gets more dramatic as the number climbs. The more records you add, the more the database has to work to count them, but cache hits will avoid the database altogether and maintain a consistent latency regardless. The latency is also affected by the app's distance from the database. The cache being at the edge maintains stable performance for cache hits regardless of the database proximity.
