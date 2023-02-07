@@ -2,9 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import useAccelerate from "@prisma/extension-accelerate";
 
 function makePrisma() {
-  return new PrismaClient({
-    datasources: { db: { url: process.env.ACCELERATE_URL } },
-  }).$extends(useAccelerate);
+  return new PrismaClient().$extends(useAccelerate);
 }
 
 const globalForPrisma = global as unknown as {
