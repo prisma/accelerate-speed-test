@@ -92,7 +92,7 @@ async function p50(
       cb(duration);
     }
   }
-  return durations.sort().at(Math.floor(durations.length * 0.5)) ?? NaN;
+  return durations.sort((a, b) => a - b).at(Math.floor(durations.length * 0.5)) ?? NaN;
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {
