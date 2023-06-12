@@ -7,9 +7,14 @@ export const config = {
 };
 
 export default async function handler(req: NextRequest, event: NextFetchEvent) {
-  const duration = await time(() => fetchSomeData(true));
-  event.waitUntil(sendAnalytics("accelerate.demo.ping", { duration }, req));
-  return NextResponse.json({ duration });
+  const [withCache, withoutCache] = await Promise.all([
+    time(() => fetchSomeData(true)),
+    time(() => fetchSomeData(false)),
+  ]);
+  event.waitUntil(
+    sendAnalytics("accelerate.demo.ping", { withCache, withoutCache }, req)
+  );
+  return NextResponse.json({ withCache, withoutCache });
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {
