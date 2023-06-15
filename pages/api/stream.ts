@@ -1,9 +1,13 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { fetchSomeData } from "../../lib/queries";
+import { fecthData, fetchSomeData } from "../../lib/queries";
 import { sendAnalytics } from "../../lib/telemetry";
 
 export const config = {
   runtime: "edge",
+};
+
+const objToString = (obj: Object) => {
+  return JSON.stringify(obj);
 };
 
 export default async function handler(req: NextRequest, event: NextFetchEvent) {
@@ -19,19 +23,43 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
     async start(controller) {
       await Promise.all([
         p50(
-          () => fetchSomeData(true),
-          (duration) => {
+          () =>
+            fecthData({
+              cacheQuery: true,
+              runHeavyQuery: true,
+            }),
+          ({ duration, cacheStatus }) => {
             controller.enqueue(
-              encoder.encode(`{"event":"withCache","data":${duration}}\n\n`)
+              encoder.encode(
+                objToString({
+                  event: "withCache",
+                  data: {
+                    duration,
+                    cacheStatus,
+                  },
+                })
+              )
             );
           },
           timeout
         ),
         p50(
-          () => fetchSomeData(false),
-          (duration) => {
+          () =>
+            fecthData({
+              cacheQuery: false,
+              runHeavyQuery: true,
+            }),
+          ({ duration }) => {
             controller.enqueue(
-              encoder.encode(`{"event":"withoutCache","data":${duration}}\n\n`)
+              encoder.encode(
+                objToString({
+                  event: "withoutCache",
+                  data: {
+                    duration,
+                    cacheStatus: null,
+                  },
+                })
+              )
             );
           },
           timeout
@@ -39,8 +67,8 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
       ]).then(async ([withCache, withoutCache]) => {
         controller.enqueue(
           encoder.encode(
-            `${JSON.stringify({
-              event: 'stop',
+            objToString({
+              event: "stop",
               data: {
                 withCache: withCache,
                 withoutCache: withoutCache,
@@ -48,12 +76,12 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
                   geo: req.geo,
                 },
               },
-            })}\n\n`
+            })
           )
         );
         event.waitUntil(
           sendAnalytics(
-            'accelerate.demo.stream',
+            "accelerate.demo.stream",
             { withCache, withoutCache },
             req
           )
@@ -66,13 +94,18 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
 
   return new NextResponse(body, {
     headers: {
-      'Content-Encoding': 'none',
-      'Content-Type': 'text/event-stream',
-      Connection: 'keep-alive',
-      'Cache-Control': 'no-cache',
+      "Content-Encoding": "none",
+      "Content-Type": "text/event-stream",
+      Connection: "keep-alive",
+      "Cache-Control": "no-cache",
     },
   });
 }
+
+type TestRunResult = {
+  duration: number;
+  cacheStatus: number;
+};
 
 /**
  * Runs the specified async function until the signal is aborted.
@@ -80,24 +113,42 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
  * Resolves with the P50 duration.
  */
 async function p50(
-  fn: () => Promise<void>,
-  cb: (duration: number) => void,
+  fn: () => Promise<number>,
+  cb: (result: TestRunResult) => void,
   signal: AbortSignal
 ): Promise<number> {
-  const durations = new Array<number>();
+  const results = new Array<TestRunResult>();
+
   while (!signal.aborted) {
-    const duration = await time(fn);
+    const [duration, cacheStatus] = await time(fn);
     if (!signal.aborted) {
-      durations.push(duration);
-      cb(duration);
+      results.push({ duration, cacheStatus });
+      cb({ duration, cacheStatus });
     }
   }
-  return durations.sort((a, b) => a - b).at(Math.floor(durations.length * 0.5)) ?? NaN;
+
+  const { hit, miss } = results
+    .map((item) => item.cacheStatus)
+    .reduce(
+      (prev, curr) => {
+        return {
+          hit: prev.hit + (curr == 1 ? 1 : 0),
+          miss: prev.miss + (curr == 0 ? 1 : 0),
+        };
+      },
+      { hit: 0, miss: 0 }
+    );
+
+  return (
+    results
+      .map((r) => r.duration)
+      .sort((a, b) => a - b)
+      .at(Math.floor(results.length * 0.5)) ?? NaN
+  );
 }
 
-async function time(fn: () => Promise<unknown>): Promise<number> {
+async function time(fn: () => Promise<number>): Promise<[number, number]> {
   const start = Date.now();
-  await fn();
-  return Date.now() - start;
+  const cacheStatus = await fn();
+  return [Date.now() - start, cacheStatus];
 }
-

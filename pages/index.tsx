@@ -2,6 +2,7 @@ import { Button, Code, Title } from "@prisma/lens";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
+import DatabaseInfo from "../components/DatabaseInfo";
 
 const num = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
@@ -14,9 +15,9 @@ const ms = new Intl.NumberFormat("en-US", {
   unitDisplay: "short",
 });
 
-const time = new Intl.DateTimeFormat('default', {
-  hour: 'numeric',
-  minute: 'numeric',
+const time = new Intl.DateTimeFormat("default", {
+  hour: "numeric",
+  minute: "numeric",
   hour12: false,
 });
 
@@ -51,8 +52,8 @@ await prisma.linkOpen.count({
 
 export default function Home() {
   const [history, setHistory] = useState<Record[]>([]);
-  const [state, setState] = useState<'idle' | 'running' | 'complete' | 'error'>(
-    'idle'
+  const [state, setState] = useState<"idle" | "running" | "complete" | "error">(
+    "idle"
   );
   const [cacheLatency, setCacheLatency] = useState(0);
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
@@ -60,7 +61,7 @@ export default function Home() {
   async function runTest() {
     setCacheLatency(0);
     setWithoutCacheLatency(0);
-    setState('running');
+    setState("running");
 
     async function* readStream(stream: ReadableStream<Uint8Array>) {
       const reader = stream.getReader();
@@ -83,14 +84,14 @@ export default function Home() {
       }
     }
     try {
-      await fetch('/api/stream').then(async (response) => {
+      await fetch("/api/stream").then(async (response) => {
         if (!response.body) {
-          setState('error');
+          setState("error");
           return;
         }
         for await (const { event, data } of readStream(response.body)) {
           switch (event) {
-            case 'stop': {
+            case "stop": {
               setWithoutCacheLatency(data.withoutCache);
               setCacheLatency(data.withCache);
               setHistory((prev) =>
@@ -100,7 +101,7 @@ export default function Home() {
                     location:
                       `${[data.ctx.geo?.city, data.ctx.geo?.country]
                         .filter(Boolean)
-                        .join(', ')}` || `Not available`,
+                        .join(", ")}` || `Not available`,
                     withCache: {
                       latency: ms.format(data.withCache),
                       qpm: num.format((1_000 / data.withCache) * 60),
@@ -115,21 +116,21 @@ export default function Home() {
               );
               break;
             }
-            case 'withCache': {
-              setCacheLatency(data);
+            case "withCache": {
+              setCacheLatency(data.duration);
               break;
             }
-            case 'withoutCache': {
-              setWithoutCacheLatency(data);
+            case "withoutCache": {
+              setWithoutCacheLatency(data.duration);
               break;
             }
           }
         }
-        setState('complete');
+        setState("complete");
       });
     } catch (error) {
       console.error(error);
-      setState('error');
+      setState("error");
     }
   }
 
@@ -163,25 +164,41 @@ export default function Home() {
           </Title>
           <p>
             The test will run for ~5 seconds. See how many requests Accelerate
-            can process sequentially over that time.
+            can process sequentially over that time. You can find the code for
+            this speed test in{" "}
+            <a
+              href="https://github.com/prisma/accelerate-speed-test"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: "#0096c7", textDecoration: "underline" }}
+            >
+              github
+            </a>
+            .
           </p>
         </header>
-        <section style={{ gridArea: 'action' }}>
+
+        <section className="info">
+          <h2>Database instance used</h2>
+          <DatabaseInfo />
+        </section>
+
+        <section style={{ gridArea: "action" }}>
           <Button
             autoFocus
-            isDisabled={state === 'running'}
+            isDisabled={state === "running"}
             onPress={runTest}
             onClick={runTest}
-            variant={state === 'error' ? 'negative' : 'primary'}
+            variant={state === "error" ? "negative" : "primary"}
             type="button"
           >
-            {state === 'idle' && 'Run Accelerate speed test'}
-            {state === 'running' && 'Running Accelerate speed test'}
-            {state === 'complete' && 'Run another test'}
-            {state === 'error' && 'Try Again'}
+            {state === "idle" && "Run Accelerate speed test"}
+            {state === "running" && "Running Accelerate speed test"}
+            {state === "complete" && "Run another test"}
+            {state === "error" && "Try Again"}
           </Button>
         </section>
-        <section className={`card ${state}`} style={{ gridArea: 'cache' }}>
+        <section className={`card ${state}`} style={{ gridArea: "cache" }}>
           <h2>✅ With Accelerate</h2>
           <dl>
             <dd>{num.format((1_000 / cacheLatency) * 60)}</dd>
@@ -194,7 +211,7 @@ export default function Home() {
           <span className="badge green">Cached query</span>
           <Code className="code" value={CODE_CACHE} />
         </section>
-        <section className={`card ${state}`} style={{ gridArea: 'noCache' }}>
+        <section className={`card ${state}`} style={{ gridArea: "noCache" }}>
           <h2>❌ Without Accelerate</h2>
           <dl>
             <dd>{num.format((1_000 / withoutCacheLatency) * 60)}</dd>
@@ -264,12 +281,15 @@ export default function Home() {
 }
 
 type RunningResult = {
-  event: 'withCache' | 'withoutCache';
-  data: number;
+  event: "withCache" | "withoutCache";
+  data: {
+    duration: number;
+    cacheStatus: number;
+  };
 };
 
 type FinishResult = {
-  event: 'stop';
+  event: "stop";
   data: {
     withCache: number;
     withoutCache: number;
@@ -289,7 +309,7 @@ type FinishResult = {
 
 type Record = {
   time: string;
-  location: string | 'not available';
+  location: string | "not available";
   withCache: {
     latency: string;
     qpm: string;

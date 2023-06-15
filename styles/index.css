@@ -6,6 +6,7 @@ main {
   grid-template-areas:
     "nav"
     "header"
+    "info"
     "action"
     "cache"
     "noCache"
@@ -22,6 +23,7 @@ main {
     grid-template-areas:
       "nav nav"
       "header header"
+      "info info"
       "action action"
       "cache noCache"
       "results results";
@@ -61,7 +63,7 @@ header h1 {
 }
 
 header p {
-  color: #2D3748;
+  color: #2d3748;
   font-size: 14px;
 }
 
@@ -76,11 +78,11 @@ section.card {
   border: 1px solid #edf2f7;
   border-radius: 0.375rem;
   padding: 2rem 1.5rem;
-  color: #2D3748;
+  color: #2d3748;
 }
 
 section h2 {
-  color: #2D3748;
+  color: #2d3748;
   font-size: 1.5rem;
   line-height: 1.16;
   font-weight: 600;
@@ -130,8 +132,8 @@ section .badge.gray {
 }
 
 section .badge.red {
-  background: #FFF5F5;
-  color: #9B2C2C;
+  background: #fff5f5;
+  color: #9b2c2c;
 }
 
 .code {
@@ -142,6 +144,52 @@ section .badge.red {
 
 .code pre {
   white-space: pre;
+}
+
+section.info {
+  grid-area: info;
+  align-items: flex-start;
+}
+
+section.info p {
+  color: #718096;
+}
+
+section.info table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+section.info table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+section.info table th,
+section.info table td {
+  padding: 1.25rem 0.5rem 1.25rem 0;
+}
+
+section.info table th {
+  color: #1a202c;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+section.info table td {
+  color: #2d3748;
+  line-height: 1;
+}
+
+section.info table th#time,
+section.info table th#speedup {
+  width: 8%;
+}
+
+section.info table th#location {
+  width: 20%;
 }
 
 section.results {
@@ -162,22 +210,22 @@ section.results table {
 }
 
 section.results table tr {
-  border-bottom: 1px solid #E2E8F0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 section.results table th,
 section.results table td {
-  padding: 1.25rem 0.5rem 1.25rem 0; 
+  padding: 1.25rem 0.5rem 1.25rem 0;
 }
 
 section.results table th {
-  color: #1A202C;
+  color: #1a202c;
   font-weight: 500;
   line-height: 1.7;
 }
 
 section.results table td {
-  color: #2D3748;
+  color: #2d3748;
   line-height: 1;
 }
 
@@ -198,8 +246,13 @@ section.results table td[headers="location"] {
 }
 
 @keyframes flash {
-	0% { opacity: 1; } 
-	50% { opacity: .1; } 
-	100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
 }
-
