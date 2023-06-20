@@ -6,11 +6,11 @@ main {
   grid-template-areas:
     "nav"
     "header"
-    "info"
     "action"
     "cache"
     "noCache"
-    "results";
+    "results"
+    "info";
   grid-template-columns: 1fr;
   grid-auto-rows: min-content;
   max-width: 64rem;
@@ -23,10 +23,10 @@ main {
     grid-template-areas:
       "nav nav"
       "header header"
-      "info info"
       "action action"
       "cache noCache"
-      "results results";
+      "results results"
+      "info info";
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -54,7 +54,7 @@ nav .badge {
 header {
   grid-area: header;
   text-align: center;
-  max-width: 500px;
+  max-width: 600px;
   justify-self: center;
 }
 
@@ -63,8 +63,8 @@ header h1 {
 }
 
 header p {
-  color: #2d3748;
-  font-size: 14px;
+  color: #242b37;
+  font-size: 16px;
 }
 
 section {
@@ -254,5 +254,83 @@ section.results table td[headers="location"] {
   }
   100% {
     opacity: 1;
+  }
+}
+
+.accelerate-image-group {
+  height: 150px;
+  width: 65%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.accelerate-database-img {
+  width: 40px;
+}
+
+.accelerate-server-img {
+  size: 20px;
+  width: 40px;
+}
+
+.accelerate-cache-img {
+  size: 40px;
+  width: 40px;
+}
+
+.line-space {
+  width: 70px;
+}
+
+.line-longer-space {
+  width: 150px;
+}
+
+.line {
+  position: relative;
+  height: 0px;
+  width: 1px;
+  border-bottom: 1px solid #000;
+  animation: moveLine 0.25s forwards infinite;
+}
+
+.line-longer {
+  position: relative;
+  height: 0px;
+  width: 1px;
+  border-bottom: 1px solid #000;
+  animation: moveLineLonger 3s forwards infinite;
+}
+
+.line-longer:before,
+.line::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 100%;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid #000;
+}
+
+@keyframes moveLine {
+  0% {
+    width: 1px;
+    left: 0;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+@keyframes moveLineLonger {
+  0% {
+    width: 1px;
+    left: 0;
+  }
+  100% {
+    width: 90%;
   }
 }

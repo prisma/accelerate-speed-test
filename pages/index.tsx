@@ -3,6 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import DatabaseInfo from "../components/DatabaseInfo";
+import { AiFillGithub, AiOutlineGithub } from "react-icons/ai";
+import { CacheAnimation } from "../components/CacheIllustration";
 
 const num = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
@@ -151,6 +153,13 @@ export default function Home() {
           <span className="badge">Early Access</span>
           <span style={{ flex: 1 }}></span>
           <a
+            href="https://github.com/prisma/accelerate-speed-test"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <AiFillGithub size={25} />
+          </a>
+          <a
             href="https://www.prisma.io/data-platform/accelerate"
             target="_blank"
             rel="noopener noreferrer"
@@ -163,25 +172,15 @@ export default function Home() {
             Accelerate Speed test
           </Title>
           <p>
-            The test will run for ~5 seconds. See how many requests Accelerate
-            can process sequentially over that time. You can find the code for
-            this speed test in{" "}
-            <a
-              href="https://github.com/prisma/accelerate-speed-test"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: "#0096c7", textDecoration: "underline" }}
-            >
-              github
-            </a>
-            .
+            The speed test involved running a count query on a 500k row dataset
+            with and without an Accelerate cache. The database was hosted in one
+            region, while requests were made from Vercel edge functions. The
+            experiment proves that Accelerate offers faster queries and serves
+            data from the nearest cache server to the edge function location,
+            avoiding the need for a time-consuming round trip to fetch data from
+            the database in N. Virginia (us-east-1).
           </p>
         </header>
-
-        <section className="info">
-          <h2>Database instance used</h2>
-          <DatabaseInfo />
-        </section>
 
         <section style={{ gridArea: "action" }}>
           <Button
@@ -199,7 +198,16 @@ export default function Home() {
           </Button>
         </section>
         <section className={`card ${state}`} style={{ gridArea: "cache" }}>
+          <CacheAnimation
+            skipCache={false}
+            location={history?.[0]?.location ?? null}
+          />
           <h2>✅ With Accelerate</h2>
+          <p>
+            Significantly reduce computational overhead by caching, eliminating
+            the need to scan ~500k rows per query.
+          </p>
+
           <dl>
             <dd>{num.format((1_000 / cacheLatency) * 60)}</dd>
             <dt>queries per minute</dt>
@@ -208,11 +216,21 @@ export default function Home() {
             <dd>{ms.format(cacheLatency)}</dd>
             <dt>latency</dt>
           </dl>
+          <ul>
+            <li>✨ Reduced latency</li>
+            <li>🚀 Increased Query Capacity</li>
+            <li>🌟 Optimal Resource Utilization</li>
+          </ul>
           <span className="badge green">Cached query</span>
           <Code className="code" value={CODE_CACHE} />
         </section>
         <section className={`card ${state}`} style={{ gridArea: "noCache" }}>
+          <CacheAnimation skipCache location={history?.[0]?.location ?? null} />
           <h2>❌ Without Accelerate</h2>
+          <p>
+            Computationally expensive as it performs a scan on ~500k rows on
+            every query
+          </p>
           <dl>
             <dd>{num.format((1_000 / withoutCacheLatency) * 60)}</dd>
             <dt>queries per minute</dt>
@@ -221,6 +239,11 @@ export default function Home() {
             <dd>{ms.format(withoutCacheLatency)}</dd>
             <dt>latency</dt>
           </dl>
+          <ul>
+            <li>🐢 High latency</li>
+            <li>🪫 Low Query Capacity</li>
+            <li>🚧 Poor Resource Utilization</li>
+          </ul>
           <span className="badge gray">Non-cached query</span>
           <Code className="code" value={CODE_NO_CACHE} />
         </section>
@@ -274,6 +297,10 @@ export default function Home() {
               </tbody>
             </table>
           )}
+        </section>
+        <section className="info">
+          <h2>Database instance used</h2>
+          <DatabaseInfo />
         </section>
       </main>
     </>

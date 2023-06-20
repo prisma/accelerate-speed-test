@@ -17,7 +17,7 @@ const DatabaseInfo = () => {
         <tr>
           <td>PostgreSQL</td>
           <td>db.m5.large</td>
-          <td>2GB</td>
+          <td>8GB</td>
           <td>2 vCPU</td>
           <td>us-east-1</td>
           <td>AWS</td>
