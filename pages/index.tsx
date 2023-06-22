@@ -3,7 +3,11 @@ import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
 import DatabaseInfo from "../components/DatabaseInfo";
-import { AiFillGithub, AiOutlineGithub } from "react-icons/ai";
+import {
+  AiFillGithub,
+  AiOutlineArrowDown,
+  AiOutlineGithub,
+} from "react-icons/ai";
 import { CacheAnimation } from "../components/CacheIllustration";
 
 const num = new Intl.NumberFormat("en-US", {
@@ -157,28 +161,26 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <AiFillGithub size={25} />
+            <AiFillGithub size={25} fill="#FFFFFF" />
           </a>
           <a
             href="https://www.prisma.io/data-platform/accelerate"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="secondary">Join the waitlist</Button>
+            <Button variant="primary">Join the waitlist</Button>
           </a>
         </nav>
         <header>
-          <Title titleProps={{ style: { fontSize: `2rem` } }}>
+          <Title titleProps={{ style: { color: "#fff", fontSize: `2rem` } }}>
             Accelerate Speed test
           </Title>
-          <p>
-            The speed test involved running a count query on a 500k row dataset
-            with and without an Accelerate cache. The database was hosted in one
-            region, while requests were made from Vercel edge functions. The
-            experiment proves that Accelerate offers faster queries and serves
-            data from the nearest cache server to the edge function location,
-            avoiding the need for a time-consuming round trip to fetch data from
-            the database in N. Virginia (us-east-1).
+          <p className="text-[#E2E8F0]">
+            Accelerate is an automated, global database cache that drastically
+            speeds up your database queries made with Prisma Client. This Speed
+            Test runs a simple count query on a dataset with 500k rows and shows
+            the results <i>with</i> and <i>without</i> using the Accelerate
+            cache.
           </p>
         </header>
 
@@ -191,29 +193,38 @@ export default function Home() {
             variant={state === "error" ? "negative" : "primary"}
             type="button"
           >
-            {state === "idle" && "Run Accelerate speed test"}
-            {state === "running" && "Running Accelerate speed test"}
-            {state === "complete" && "Run another test"}
-            {state === "error" && "Try Again"}
+            {state === "idle" && "Run Accelerate speed test  ⬇️"}
+            {state === "running" && "Running Accelerate speed test  🚀"}
+            {state === "complete" && "Run another test  🔁"}
+            {state === "error" && "Try Again  🔁"}
           </Button>
         </section>
         <section className={`card ${state}`} style={{ gridArea: "cache" }}>
+          <h2>✅ With Accelerate</h2>
           <CacheAnimation
             skipCache={false}
             location={history?.[0]?.location ?? null}
           />
-          <h2>✅ With Accelerate</h2>
-          <p>
-            Significantly reduce computational overhead by caching, eliminating
-            the need to scan ~500k rows per query.
+          <p className="!h-[90px]">
+            The result of the database query is cached at the Accelerate cache
+            node in{" "}
+            {history?.[0]?.location == null ||
+            history?.[0]?.location == "Not available" ? (
+              "the closest region"
+            ) : (
+              <span className="location-span">{history?.[0]?.location}</span>
+            )}{" "}
+            and retrieved from there:
           </p>
 
           <dl>
-            <dd>{num.format((1_000 / cacheLatency) * 60)}</dd>
+            <dd className="!text-[#04C8BB]">
+              {num.format((1_000 / cacheLatency) * 60)}
+            </dd>
             <dt>queries per minute</dt>
           </dl>
           <dl>
-            <dd>{ms.format(cacheLatency)}</dd>
+            <dd className="!text-[#04C8BB]">{ms.format(cacheLatency)}</dd>
             <dt>latency</dt>
           </dl>
           <ul>
@@ -225,18 +236,23 @@ export default function Home() {
           <Code className="code" value={CODE_CACHE} />
         </section>
         <section className={`card ${state}`} style={{ gridArea: "noCache" }}>
-          <CacheAnimation skipCache location={history?.[0]?.location ?? null} />
           <h2>❌ Without Accelerate</h2>
-          <p>
-            Computationally expensive as it performs a scan on ~500k rows on
-            every query
+          <CacheAnimation skipCache location={history?.[0]?.location ?? null} />
+          <p className="!h-[90px]">
+            The database query and its response need to travel to the database
+            in <span className="location-span">us-east-1</span> and back to you
+            every time:
           </p>
           <dl>
-            <dd>{num.format((1_000 / withoutCacheLatency) * 60)}</dd>
+            <dd className="!text-[#F56565]">
+              {num.format((1_000 / withoutCacheLatency) * 60)}
+            </dd>
             <dt>queries per minute</dt>
           </dl>
           <dl>
-            <dd>{ms.format(withoutCacheLatency)}</dd>
+            <dd className="!text-[#F56565]">
+              {ms.format(withoutCacheLatency)}
+            </dd>
             <dt>latency</dt>
           </dl>
           <ul>

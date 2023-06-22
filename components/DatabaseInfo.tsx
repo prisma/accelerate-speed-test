@@ -15,12 +15,24 @@ const DatabaseInfo = () => {
       </thead>
       <tbody>
         <tr>
-          <td>PostgreSQL</td>
-          <td>db.m5.large</td>
-          <td>8GB</td>
-          <td>2 vCPU</td>
-          <td>us-east-1</td>
-          <td>AWS</td>
+          <td>
+            <span>PostgreSQL</span>
+          </td>
+          <td>
+            <span>db.m5.large</span>
+          </td>
+          <td>
+            <span>8GB</span>
+          </td>
+          <td>
+            <span>2 vCPU</span>
+          </td>
+          <td>
+            <span>us-east-1</span>
+          </td>
+          <td>
+            <span>AWS</span>
+          </td>
         </tr>
       </tbody>
     </table>

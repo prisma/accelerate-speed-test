@@ -7,9 +7,8 @@ export const CacheAnimation: React.FC<{
   return (
     <>
       <div
-        className="accelerate-image-group"
+        className="accelerate-image-group min-w-[100%]"
         style={{
-          width: 400,
           padding: "10px",
         }}
       >
