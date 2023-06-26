@@ -1,11 +1,43 @@
-import { Button, Code, Title } from "@prisma/lens";
+import { defaultTheme, WebsiteButton } from "@prisma/lens/dist/web";
 import Head from "next/head";
 import Image from "next/image";
 import { useState } from "react";
-import DatabaseInfo from "../components/DatabaseInfo";
-import { AiFillGithub, AiOutlineGithub } from "react-icons/ai";
-import { CacheAnimation } from "../components/CacheIllustration";
 
+import { CacheAnimation } from "../components/CacheIllustration";
+import DatabaseInfo from "../components/DatabaseInfo";
+import styles from "../styles/index.module.scss"
+
+const pageInfo = [
+  {
+    title: "Application",
+    description: <div>Built with Next.js (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://github.com/vercel/next.js/"
+      >
+        GitHub
+      </a>
+    )</div>,
+    icon: "/github.svg"
+  },
+  {
+    title: "Deployment",
+    description: <div>Vercel Edge Functions</div>,
+    icon: "/vercel.svg"
+  },
+  { 
+    title: "Database",
+    description: <div>
+      <span>PostgreSQL </span>
+      (<span className={styles.badgeYellow}>
+        <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+        US-EAST-1
+      </span>)
+    </div> ,
+    icon: "/database.svg"
+  }
+]
 const num = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
@@ -23,10 +55,10 @@ const time = new Intl.DateTimeFormat("default", {
   hour12: false,
 });
 
-const CODE_CACHE = `
-await prisma.linkOpen.count({
-  cacheStrategy: { ttl: 3_600 },
-  where: {
+const CODE_CACHE = <>{`
+await prisma.linkOpen.count({`} 
+  <span>{`  cacheStrategy: { ttl: 3_600 },`} </span>
+  {`  where: {
     link: {
       User: {
         email: {
@@ -36,7 +68,7 @@ await prisma.linkOpen.count({
     },
   },
 });
-`;
+`}</>;
 
 const CODE_NO_CACHE = `
 await prisma.linkOpen.count({
@@ -59,6 +91,9 @@ export default function Home() {
   );
   const [cacheLatency, setCacheLatency] = useState(0);
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
+
+  const [showWith, toggleWith] = useState<boolean>(true)
+  const [showWithout, toggleWithout] = useState<boolean>(true)
 
   async function runTest() {
     setCacheLatency(0);
@@ -150,105 +185,134 @@ export default function Home() {
       <main>
         <nav>
           <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
-          <span className="badge">Early Access</span>
+          <span className="green-badge">Early Access</span>
           <span style={{ flex: 1 }}></span>
           <a
             href="https://github.com/prisma/accelerate-speed-test"
             target="_blank"
+            className={styles.githubIcon}
             rel="noopener noreferrer"
           >
-            <AiFillGithub size={25} />
+            <img src={"./github.svg"} width="32px" height="32px" />
           </a>
-          <a
+          <WebsiteButton
             href="https://www.prisma.io/data-platform/accelerate"
             target="_blank"
             rel="noopener noreferrer"
-          >
-            <Button variant="secondary">Join the waitlist</Button>
-          </a>
+            color="teal">
+              Join the waitlist
+          </WebsiteButton>
         </nav>
-        <header>
-          <Title titleProps={{ style: { fontSize: `2rem` } }}>
+        <header className={styles.header}>
+          <h1 className={styles.h1}>
             Accelerate Speed test
-          </Title>
-          <p>
-            The speed test involved running a count query on a 500k row dataset
-            with and without an Accelerate cache. The database was hosted in one
-            region, while requests were made from Vercel edge functions. The
-            experiment proves that Accelerate offers faster queries and serves
-            data from the nearest cache server to the edge function location,
-            avoiding the need for a time-consuming round trip to fetch data from
-            the database in N. Virginia (us-east-1).
-          </p>
+          </h1>
+          <div>
+            <p>
+              Accelerate cache improved query speed on a <b>500k row dataset</b> by serving data from the nearest cache server, eliminating database round trips in N. Virginia (us-east-1).
+            </p>
+          </div>
         </header>
 
-        <section style={{ gridArea: "action" }}>
-          <Button
-            autoFocus
-            isDisabled={state === "running"}
-            onPress={runTest}
-            onClick={runTest}
-            variant={state === "error" ? "negative" : "primary"}
-            type="button"
-          >
+        <div className={styles.pageInfo}>
+          {pageInfo.map((e: any, idx: number) => <div key={idx}>
+            <div className={styles.squareIcon}>
+              <img src={e.icon} width="24px" height="24px" />
+            </div>
+            <div className={styles.infoText} style={{fontFamily: defaultTheme.fonts.heading}}>
+              <span>{e.title}</span>
+              <div>{e.description}</div>
+            </div>
+          </div>)}
+        </div>
+
+        <div className={styles.testBtn}>
+          <WebsiteButton color="teal" disabled={state === "running"} onClick={() => runTest()}>
             {state === "idle" && "Run Accelerate speed test"}
             {state === "running" && "Running Accelerate speed test"}
             {state === "complete" && "Run another test"}
             {state === "error" && "Try Again"}
-          </Button>
-        </section>
-        <section className={`card ${state}`} style={{ gridArea: "cache" }}>
-          <CacheAnimation
-            skipCache={false}
-            location={history?.[0]?.location ?? null}
-          />
-          <h2>✅ With Accelerate</h2>
-          <p>
-            Significantly reduce computational overhead by caching, eliminating
-            the need to scan ~500k rows per query.
-          </p>
-
-          <dl>
-            <dd>{num.format((1_000 / cacheLatency) * 60)}</dd>
-            <dt>queries per minute</dt>
-          </dl>
-          <dl>
-            <dd>{ms.format(cacheLatency)}</dd>
-            <dt>latency</dt>
-          </dl>
-          <ul>
-            <li>✨ Reduced latency</li>
-            <li>🚀 Increased Query Capacity</li>
-            <li>🌟 Optimal Resource Utilization</li>
-          </ul>
-          <span className="badge green">Cached query</span>
-          <Code className="code" value={CODE_CACHE} />
-        </section>
-        <section className={`card ${state}`} style={{ gridArea: "noCache" }}>
-          <CacheAnimation skipCache location={history?.[0]?.location ?? null} />
-          <h2>❌ Without Accelerate</h2>
-          <p>
-            Computationally expensive as it performs a scan on ~500k rows on
-            every query
-          </p>
-          <dl>
-            <dd>{num.format((1_000 / withoutCacheLatency) * 60)}</dd>
-            <dt>queries per minute</dt>
-          </dl>
-          <dl>
-            <dd>{ms.format(withoutCacheLatency)}</dd>
-            <dt>latency</dt>
-          </dl>
-          <ul>
-            <li>🐢 High latency</li>
-            <li>🪫 Low Query Capacity</li>
-            <li>🚧 Poor Resource Utilization</li>
-          </ul>
-          <span className="badge gray">Non-cached query</span>
-          <Code className="code" value={CODE_NO_CACHE} />
-        </section>
-        <section className="results">
-          <h2>Speed test history</h2>
+            <img src="/arrow-down.svg" />
+          </WebsiteButton>
+        </div>
+        <div className={styles.testArea}>
+          <div className={styles.withAccelerate}>
+            <h3><img src="/bolt.svg" /> With Accelerate</h3>
+            <div className={styles.illustrationSection}>
+              <img src="/with-accelerate.svg" />
+            </div>
+            <div className={styles.cardInfo}>
+              <div className={styles.numbers}>
+                <h4>{num.format((1_000 / cacheLatency) * 60)}</h4>
+                <span>queries per minute</span>
+              </div>
+              <div className={styles.numbers}>
+                <h4>{ms.format(cacheLatency)}</h4>
+                <span>latency</span>
+              </div>
+              <p>
+                The result of the database query is cached at the Accelerate caching node in&nbsp;
+                <span className={styles.badgeYellow}>
+                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  {history?.[0]?.location ?? ""}
+                </span>&nbsp;
+                and retrieved from there:
+              </p>
+              <ul>
+                <li>✨ Reduced latency</li>
+                <li>🚀 Increased Query Capacity</li>
+                <li>🌟 Optimal Resource Utilization</li>
+              </ul>
+              <div className={`${styles.expandBar} ${styles.with}`} onClick={() => toggleWith(!showWith)}>
+                Expand to view Prisma Client query
+              </div>
+              <pre className={`${styles.code} ${!showWith && styles.hide}`}>
+                <code>
+                  {CODE_CACHE}
+                </code>
+              </pre>
+            </div>
+          </div>
+          <div className={styles.withoutAccelerate}>
+            <h3><img src="/clock.svg" /> Without Accelerate</h3>
+            <div className={styles.illustrationSection}>
+              <img src="/without-accelerate.svg" />
+            </div>
+            <div className={styles.cardInfo}>
+              <div className={styles.numbers}>
+                <h4>{num.format((1_000 / withoutCacheLatency) * 60)}</h4>
+                <span>queries per minute</span>
+              </div>
+              <div className={styles.numbers}>
+                <h4>{ms.format(withoutCacheLatency)}</h4>
+                <span>latency</span>
+              </div>
+              <p>
+              The database query and its response need to travel to the database in&nbsp;
+                <span className={styles.badgeYellow}>
+                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  {history?.[0]?.location ?? ""}
+                </span>&nbsp;
+                and retrieved from there:
+              </p>
+              <ul>
+                <li>🐢 High latency</li>
+                <li>🪫 Low Query Capacity</li>
+                <li>🚧 Poor Resource Utilization</li>
+              </ul>
+              <div className={`${styles.expandBar} ${styles.without}`} onClick={() => toggleWithout(!showWithout)}>
+                Expand to view Prisma Client query
+              </div>
+              <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
+                <code>
+                  {CODE_NO_CACHE}
+                </code>
+              </pre>
+            </div>
+          </div>
+        </div>
+        <div className={styles.results}>
+          <h4>Speed test history</h4>
           {history.length === 0 ? (
             <p>No tests ran yet</p>
           ) : (
@@ -272,22 +336,22 @@ export default function Home() {
                       {record.location}
                     </td>
                     <td headers="accelerate-qpm">
-                      <span className="badge green">
+                      <span className={styles.badgeGreen}>
                         {record.withCache.qpm}
                       </span>
                     </td>
                     <td headers="non-cached-qpm">
-                      <span className="badge red">
+                      <span className={styles.badgeRed}>
                         {record.withoutCache.qpm}
                       </span>
                     </td>
                     <td headers="accelerate-latency">
-                      <span className="badge green">
+                      <span className={styles.badgeGreen}>
                         {record.withCache.latency}
                       </span>
                     </td>
                     <td headers="non-cached-latency">
-                      <span className="badge red">
+                      <span className={styles.badgeRed}>
                         {record.withoutCache.latency}
                       </span>
                     </td>
@@ -297,11 +361,11 @@ export default function Home() {
               </tbody>
             </table>
           )}
-        </section>
-        <section className="info">
-          <h2>Database instance used</h2>
+        </div>
+        <div className={styles.info}>
+          <h4>Database instance used</h4>
           <DatabaseInfo />
-        </section>
+        </div>
       </main>
     </>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-
+import styles from "../styles/index.module.scss"
 const DatabaseInfo = () => {
   return (
     <table>
@@ -15,12 +15,34 @@ const DatabaseInfo = () => {
       </thead>
       <tbody>
         <tr>
-          <td>PostgreSQL</td>
-          <td>db.m5.large</td>
-          <td>8GB</td>
-          <td>2 vCPU</td>
-          <td>us-east-1</td>
-          <td>AWS</td>
+          <td>
+            <span className={styles.badgeGray}>PostgreSQL</span>
+          </td>
+          <td>
+            <span className={styles.badgeGray}>
+            db.m5.large
+          </span>
+          </td>
+          <td>
+            <span className={styles.badgeGray}>
+            8GB
+          </span>
+          </td>
+          <td>
+            <span className={styles.badgeGray}>
+            2 vCPU
+          </span>
+          </td>
+          <td>
+            <span className={styles.badgeGray}>
+            us-east-1
+          </span>
+          </td>
+          <td>
+            <span className={styles.badgeGray}>
+            AWS
+          </span>
+          </td>
         </tr>
       </tbody>
     </table>

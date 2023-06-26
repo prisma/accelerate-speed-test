@@ -1,0 +1,302 @@
+$gray-200: rgba(237, 242, 247, 1);
+$gray-300: #E2E8F0;
+$gray-400: #CBD5E0;
+$gray-500: #A0AEC0;
+$gray-700: #4A5568;
+$gray-800: #2D3748;
+
+$yellow-400: #F6AD55;
+
+$teal-400: #71E8DF;
+$teal-500: #04C8BB;
+$teal-800: #154F47;
+
+$red-200: #FED7D7;
+$red-500: #F56565;
+$red-800: #9B2C2C;
+
+$green-800: #22543D;
+
+.h1 {
+  color: white;
+  margin-bottom: 40px;
+}
+
+.header {
+  margin: 30px auto 44px auto;
+  max-width: 682px;
+  text-align: center;
+  p {
+    color: $gray-300;
+    max-width: 570px;
+    margin: 0 auto;
+  }
+}
+
+.githubIcon {
+  margin-top: 4px;
+}
+
+.squareIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $gray-800;
+}
+
+.infoText {
+  > span {
+    color: $gray-400;
+    margin-bottom: 4px;
+  }
+  > div {
+    color: white;
+  }
+}
+
+.pageInfo {
+  display: grid;
+  padding: 24px 0 40px 0;
+  margin-bottom: 32px;
+  grid-template-columns: auto auto auto;
+  > div {
+    display: flex;
+    gap: 23px;
+    justify-content: center;
+  }
+}
+
+.badgeYellow {
+  padding: 4px 7px;
+  width: auto;
+  border-radius: 7px;
+  background-color: $gray-800;
+  font-size: 12px;
+  color: $yellow-400;
+  > img {
+    margin-right: 4px;
+  }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow', sans-serif;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0.05em;
+}
+
+.testBtn { 
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 70px;
+  img {
+    margin-left: 8px;
+  }
+}
+
+.testArea {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 55px;
+  ul {
+    padding: 0;
+    list-style-type: none;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+  h3 {
+    color: white;
+    padding: 24px 40px;
+    border-bottom: 2px solid $gray-800;
+    margin: 0;
+  }
+  img {
+    display: inline-flex;
+    margin-right: 16px;
+  }
+  > div {
+    border: 2px solid $gray-800;
+    border-radius: 16px;
+    flex: 1;
+    width: calc(50% - 13px);
+    .illustrationSection { 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px 46px;
+      height: 150px;
+    }
+    .cardInfo {
+      padding: 25px 44px 33px 44px;
+      border-top: 2px solid $gray-800;
+      color: $gray-400;
+      p {
+        margin: 24px 0;
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+.numbers {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: $gray-500;
+  h4 {
+    margin: 0;
+    font-size: 24px;
+  }
+}
+
+.withAccelerate {
+  .numbers {
+    h4 {
+      color: $teal-500;
+    }
+  }
+}
+.withoutAccelerate {
+  .numbers {
+    h4 {
+      color: $red-500;
+    }
+  }
+}
+
+.code {
+  background-color: $gray-800;
+  padding: 0 16px 16px 16px;
+  border-radius: 8px;
+  span {
+    color: $teal-400;
+    display: block;
+  }
+
+  &.hide {
+    display: none;
+  }
+}
+
+.expandBar {
+  position: relative;
+  border-radius: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 18.7px;
+  &::after {
+    position: absolute;
+    content: "";
+    border-top: 2px solid;
+    border-right: 2px solid;
+    top: 50%;
+    transform: translateY(-80%) rotate(135deg);
+    width: 6px;
+    height: 6px;
+    right: 10px;
+  }
+  &.with {
+    background-color: $green-800;
+    color: $teal-400;
+    &::after {
+      border-color: $teal-400;
+    }
+  }
+  &.without {
+    background-color: $red-800;
+    color: $red-200;
+    &::after {
+      border-color: $red-200;
+    }
+  }
+}
+
+.results, .info {
+  color: $gray-300;
+  h4 {
+    color: white;
+    text-align: left;
+    margin-left: 0;
+    font-size: 24px;
+    margin-bottom: 24px;
+    margin-top: 0;
+    font-weight: 700;
+    line-height: 26px;
+    letter-spacing: -0.02em;
+    text-align: left;
+  }
+  th {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    padding: 20px 0;
+  }
+  td {
+    padding: 20px 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: left;
+    &[headers="speedup"] {
+      color: $gray-500;
+    }
+  }
+  tbody {
+    position: relative;
+    color: $gray-300;
+    &::after {
+      border-top: 1px solid $gray-700;
+      border-bottom: 1px solid $gray-700;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: -1.5px;
+      content: "";
+    }
+  }
+  thead {
+    color: $gray-400;
+  }
+  table {
+    margin-bottom: 55px;
+    width: 100%;
+  }
+}
+
+.badgeGreen, .badgeRed, .badgeGray {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 19px;
+  letter-spacing: 0em;
+  padding: 2px 6px;
+  text-transform: uppercase;
+  text-align: left;
+  border-radius: 2px;
+}
+
+.badge {
+  &Green {
+    color: $teal-400;
+    background-color: $teal-800;
+  }
+  &Red {
+    color: $red-200;
+    background-color: rgba(155, 44, 44, 0.8);
+  }
+  &Gray {
+    background-color: $gray-700;
+    color: $gray-200;
+  }
+}

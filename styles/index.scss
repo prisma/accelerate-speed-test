@@ -1,3 +1,6 @@
+html {
+  background-color: #1A202C;
+}
 main {
   padding: 0 1rem;
   display: grid;
@@ -49,22 +52,6 @@ nav .badge {
   line-height: 1;
   text-transform: uppercase;
   font-weight: 600;
-}
-
-header {
-  grid-area: header;
-  text-align: center;
-  max-width: 600px;
-  justify-self: center;
-}
-
-header h1 {
-  margin: 0.5rem 0;
-}
-
-header p {
-  color: #242b37;
-  font-size: 16px;
 }
 
 section {
@@ -119,6 +106,19 @@ section .badge {
   line-height: 1.7;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.green-badge {
+  border: 1px solid #04C8BB;
+  font-family: Barlow;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 11px;
+  letter-spacing: 10%;
+  border-radius: 99px;
+  padding: 6px 8px;
+  text-transform: uppercase;
+  color: #04C8BB;
 }
 
 section .badge.green {
