@@ -1,11 +1,44 @@
 import { defaultTheme, WebsiteButton } from "@prisma/lens/dist/web";
+import * as reactCanvas from '@rive-app/react-canvas';
 import Head from "next/head";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useInView } from 'react-intersection-observer';
 
-import { CacheAnimation } from "../components/CacheIllustration";
 import DatabaseInfo from "../components/DatabaseInfo";
 import styles from "../styles/index.module.scss"
+
+const Animation = ({ name, className, fit, autoplay }: any) => {
+  const [autoplayState, setAutoplay] = useState<boolean>(autoplay)
+
+  const [reference, isInView] = useInView({
+    triggerOnce: true,
+    // rootMargin: "200px"
+    threshold: 0.2,
+  });
+
+  const { rive, RiveComponent } = reactCanvas.useRive({
+    src: `/animations/${name}.riv`,
+    autoplay: autoplayState,
+    layout: new reactCanvas.Layout({
+      fit: fit,
+      alignment: reactCanvas.Alignment.Center,
+    }),
+  });
+
+  useEffect(() => {
+    if (isInView) rive?.play();
+  }, [isInView])
+
+  useEffect(() => {
+    if (isInView) {
+      setAutoplay(true)
+      rive?.play();
+    }
+  }, [])
+
+  return <div ref={reference} className={className}><RiveComponent /></div>
+}
 
 const pageInfo = [
   {
@@ -240,6 +273,7 @@ export default function Home() {
             <h3><img src="/bolt.svg" /> With Accelerate</h3>
             <div className={styles.illustrationSection}>
               <img src="/with-accelerate.svg" />
+              {/* <Animation autoplay={true} name="with-accelerate" className={styles.heroCanvas} fit={reactCanvas.Fit.FitHeight} /> */}
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
@@ -276,7 +310,7 @@ export default function Home() {
           <div className={styles.withoutAccelerate}>
             <h3><img src="/clock.svg" /> Without Accelerate</h3>
             <div className={styles.illustrationSection}>
-              <img src="/without-accelerate.svg" />
+            {/* <Animation autoplay={true} name="without-accelerate" className={styles.heroCanvas} fit={reactCanvas.Fit.FitHeight} /> */}
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
