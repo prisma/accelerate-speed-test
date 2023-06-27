@@ -272,8 +272,7 @@ export default function Home() {
           <div className={styles.withAccelerate}>
             <h3><img src="/bolt.svg" /> With Accelerate</h3>
             <div className={styles.illustrationSection}>
-              <img src="/with-accelerate.svg" />
-              {/* <Animation autoplay={true} name="with-accelerate" className={styles.heroCanvas} fit={reactCanvas.Fit.FitHeight} /> */}
+              <Animation autoplay={true} name="with-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
@@ -310,7 +309,7 @@ export default function Home() {
           <div className={styles.withoutAccelerate}>
             <h3><img src="/clock.svg" /> Without Accelerate</h3>
             <div className={styles.illustrationSection}>
-            {/* <Animation autoplay={true} name="without-accelerate" className={styles.heroCanvas} fit={reactCanvas.Fit.FitHeight} /> */}
+            <Animation autoplay={true} name="without-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
