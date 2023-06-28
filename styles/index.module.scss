@@ -255,19 +255,15 @@ $green-800: #22543D;
   tbody {
     position: relative;
     color: $gray-300;
-    &::after {
-      border-top: 1px solid $gray-700;
-      border-bottom: 1px solid $gray-700;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      left: 0;
-      top: -1.5px;
-      content: "";
-    }
+    border-top: 1px solid $gray-700;
+    border-bottom: 1px solid $gray-700;
+    display: inline-table;
+    width: 100%;
   }
   thead {
     color: $gray-400;
+    display: inline-table;
+    width: 100%;
   }
   table {
     margin-bottom: 55px;
