@@ -108,18 +108,18 @@ $green-800: #22543D;
     font-weight: 700;
     margin-bottom: 24px;
   }
-  h4 {
+  h3 {
     color: white;
-    padding: 24px 40px;
+    padding: 24px 30px;
     border-bottom: 2px solid $gray-800;
     margin: 0;
-    font-size: 24px;
+    letter-spacing: -0.72px;
     display: flex;
     align-items: center;
-  }
-  img {
-    display: inline-flex;
-    margin-right: 16px;
+    img {
+      display: inline-flex;
+      margin-right: 12px;
+    }
   }
   > div {
     border: 2px solid $gray-800;
@@ -309,4 +309,15 @@ $green-800: #22543D;
 .animation {
   width: 100%;
   height: 55%;
+  position: relative;
+  > span {
+    position: absolute;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+  }
+  .virginia {
+    top: -30px;
+    right: -60px;
+    transform: translateX(-50%);
+  }
 }

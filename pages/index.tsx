@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import DatabaseInfo from "../components/DatabaseInfo";
 import styles from "../styles/index.module.scss"
 
-const Animation = ({ name, className, fit, autoplay }: any) => {
+const Animation = ({ name, className, fit, autoplay, badge, badge2, badgeVirginia }: any) => {
   const [autoplayState, setAutoplay] = useState<boolean>(autoplay)
 
   const [reference, isInView] = useInView({
@@ -37,7 +37,12 @@ const Animation = ({ name, className, fit, autoplay }: any) => {
     }
   }, [])
 
-  return <div ref={reference} className={className}><RiveComponent /></div>
+  return <div ref={reference} className={className}>
+    {badge}
+    {badge2}
+    {badgeVirginia}
+    <RiveComponent />
+  </div>
 }
 
 const pageInfo = [
@@ -271,9 +276,32 @@ export default function Home() {
         </div>
         <div className={styles.testArea}>
           <div className={styles.withAccelerate}>
-            <h4><img src="/bolt.svg" /> With Accelerate</h4>
+            <h3><img src="/bolt.svg" /> With Accelerate Cache</h3>
             <div className={styles.illustrationSection}>
-              <Animation autoplay={true} name="with-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
+              <Animation
+                autoplay={true}
+                name="with-accelerate"
+                className={styles.animation}
+                fit={reactCanvas.Fit.FitWidth}
+                badge={
+                  <span className={styles.badgeYellow} style={{ top: "-30px", left: "6%" }}>
+                    <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                    {history?.[0]?.location ?? ""}
+                  </span>
+                }
+                badge2={
+                  <span className={styles.badgeYellow} style={{ top: "-30px", left: "35%"}}>
+                    <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                    {history?.[0]?.location ?? ""}
+                  </span>
+                }
+                badgeVirginia={
+                  <span className={`${styles.badgeYellow} ${styles.virginia}`}>
+                    <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                    n.virginia
+                  </span>
+                }
+              />
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
@@ -308,9 +336,26 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.withoutAccelerate}>
-            <h4><img src="/clock.svg" /> Without Accelerate Cache</h4>
+            <h3><img src="/clock.svg" /> Without Accelerate Cache</h3>
             <div className={styles.illustrationSection}>
-            <Animation autoplay={true} name="without-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
+            <Animation
+              autoplay={true}
+              name="without-accelerate"
+              className={styles.animation}
+              fit={reactCanvas.Fit.FitWidth}
+              badge={
+                <span className={styles.badgeYellow} style={{ top: "-30px", left: "6%"}}>
+                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  {history?.[0]?.location ?? ""}
+                </span>
+              }
+              badgeVirginia={
+                <span className={`${styles.badgeYellow} ${styles.virginia}`}>
+                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  n.virginia
+                </span>
+              }
+            />
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
