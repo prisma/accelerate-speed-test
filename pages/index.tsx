@@ -307,7 +307,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.withoutAccelerate}>
-            <h3><img src="/clock.svg" /> Without Accelerate</h3>
+            <h3><img src="/clock.svg" /> Without Accelerate Cache</h3>
             <div className={styles.illustrationSection}>
             <Animation autoplay={true} name="without-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
             </div>
