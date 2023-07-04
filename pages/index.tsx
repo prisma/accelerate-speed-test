@@ -2,7 +2,7 @@ import { defaultTheme, WebsiteButton } from "@prisma/lens/dist/web";
 import * as reactCanvas from '@rive-app/react-canvas';
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from 'react-intersection-observer';
 
 import DatabaseInfo from "../components/DatabaseInfo";
@@ -125,10 +125,17 @@ export default function Home() {
   const [cacheLatency, setCacheLatency] = useState(0);
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
 
-  const [showWith, toggleWith] = useState<boolean>(true)
-  const [showWithout, toggleWithout] = useState<boolean>(true)
+  const [showWith, toggleWith] = useState<boolean>(false)
+  const [showWithout, toggleWithout] = useState<boolean>(false)
+
+  const testArea = useRef<any>(null)
 
   async function runTest() {
+    const testY = testArea?.current.getBoundingClientRect().top + window.scrollY;
+    window.scroll({
+      top: testY,
+      behavior: 'smooth'
+    });
     setCacheLatency(0);
     setWithoutCacheLatency(0);
     setState("running");
@@ -247,6 +254,16 @@ export default function Home() {
           </div>
         </header>
 
+        <div className={styles.testBtn}>
+          <WebsiteButton color="teal" disabled={state === "running"} onClick={() => runTest()}>
+            {state === "idle" && "Run Accelerate speed test"}
+            {state === "running" && "Running Accelerate speed test"}
+            {state === "complete" && "Run another test"}
+            {state === "error" && "Try Again"}
+            <img src="/arrow-down.svg" />
+          </WebsiteButton>
+        </div>
+
         <div className={styles.pageInfo}>
           {pageInfo.map((e: any, idx: number) => <div key={idx}>
             <div className={styles.squareIcon}>
@@ -258,17 +275,7 @@ export default function Home() {
             </div>
           </div>)}
         </div>
-
-        <div className={styles.testBtn}>
-          <WebsiteButton color="teal" disabled={state === "running"} onClick={() => runTest()}>
-            {state === "idle" && "Run Accelerate speed test"}
-            {state === "running" && "Running Accelerate speed test"}
-            {state === "complete" && "Run another test"}
-            {state === "error" && "Try Again"}
-            <img src="/arrow-down.svg" />
-          </WebsiteButton>
-        </div>
-        <div className={styles.testArea}>
+        <div className={styles.testArea} ref={testArea}>
           <div className={styles.withAccelerate}>
             <h3><img src="/bolt.svg" /> With Accelerate</h3>
             <div className={styles.illustrationSection}>
