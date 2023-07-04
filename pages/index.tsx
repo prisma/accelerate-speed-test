@@ -128,14 +128,8 @@ export default function Home() {
   const [showWith, toggleWith] = useState<boolean>(false)
   const [showWithout, toggleWithout] = useState<boolean>(false)
 
-  const testArea = useRef<any>(null)
-
   async function runTest() {
-    const testY = testArea?.current.getBoundingClientRect().top + window.scrollY;
-    window.scroll({
-      top: testY,
-      behavior: 'smooth'
-    });
+    window.location.hash='#testArea';
     setCacheLatency(0);
     setWithoutCacheLatency(0);
     setState("running");
@@ -264,7 +258,7 @@ export default function Home() {
           </WebsiteButton>
         </div>
 
-        <div className={styles.pageInfo}>
+        <div className={styles.pageInfo} id="testArea">
           {pageInfo.map((e: any, idx: number) => <div key={idx}>
             <div className={styles.squareIcon}>
               <img src={e.icon} width="24px" height="24px" />
@@ -275,7 +269,7 @@ export default function Home() {
             </div>
           </div>)}
         </div>
-        <div className={styles.testArea} ref={testArea}>
+        <div className={styles.testArea}>
           <div className={styles.withAccelerate}>
             <h3><img src="/bolt.svg" /> With Accelerate</h3>
             <div className={styles.illustrationSection}>
