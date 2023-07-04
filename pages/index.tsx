@@ -2,7 +2,7 @@ import { defaultTheme, WebsiteButton } from "@prisma/lens/dist/web";
 import * as reactCanvas from '@rive-app/react-canvas';
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from 'react-intersection-observer';
 
 import DatabaseInfo from "../components/DatabaseInfo";
@@ -271,7 +271,7 @@ export default function Home() {
         </div>
         <div className={styles.testArea}>
           <div className={styles.withAccelerate}>
-            <h3><img src="/bolt.svg" /> With Accelerate</h3>
+            <h4><img src="/bolt.svg" /> With Accelerate</h4>
             <div className={styles.illustrationSection}>
               <Animation autoplay={true} name="with-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
             </div>
@@ -297,7 +297,7 @@ export default function Home() {
                 <li>🚀 Increased Query Capacity</li>
                 <li>🌟 Optimal Resource Utilization</li>
               </ul>
-              <div className={`${styles.expandBar} ${styles.with}`} onClick={() => toggleWith(!showWith)}>
+              <div className={`${styles.expandBar} ${styles.with} ${showWith && styles.active}`} onClick={() => toggleWith(!showWith)}>
                 Expand to view Prisma Client query
               </div>
               <pre className={`${styles.code} ${!showWith && styles.hide}`}>
@@ -308,7 +308,7 @@ export default function Home() {
             </div>
           </div>
           <div className={styles.withoutAccelerate}>
-            <h3><img src="/clock.svg" /> Without Accelerate Cache</h3>
+            <h4><img src="/clock.svg" /> Without Accelerate Cache</h4>
             <div className={styles.illustrationSection}>
             <Animation autoplay={true} name="without-accelerate" className={styles.animation} fit={reactCanvas.Fit.FitWidth} />
             </div>
@@ -334,7 +334,7 @@ export default function Home() {
                 <li>🪫 Low Query Capacity</li>
                 <li>🚧 Poor Resource Utilization</li>
               </ul>
-              <div className={`${styles.expandBar} ${styles.without}`} onClick={() => toggleWithout(!showWithout)}>
+              <div className={`${styles.expandBar} ${styles.without} ${showWithout && styles.active}`} onClick={() => toggleWithout(!showWithout)}>
                 Expand to view Prisma Client query
               </div>
               <pre className={`${styles.code} ${!showWithout && styles.hide}`}>

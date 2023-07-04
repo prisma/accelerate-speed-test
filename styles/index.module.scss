@@ -108,11 +108,14 @@ $green-800: #22543D;
     font-weight: 700;
     margin-bottom: 24px;
   }
-  h3 {
+  h4 {
     color: white;
     padding: 24px 40px;
     border-bottom: 2px solid $gray-800;
     margin: 0;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
   }
   img {
     display: inline-flex;
@@ -192,6 +195,7 @@ $green-800: #22543D;
   cursor: pointer;
   font-weight: 600;
   line-height: 18.7px;
+  user-select: none;
   &::after {
     position: absolute;
     content: "";
@@ -215,6 +219,11 @@ $green-800: #22543D;
     color: $red-200;
     &::after {
       border-color: $red-200;
+    }
+  }
+  &.active {
+    &::after {
+      transform: translateY(-35%) rotate(315deg);
     }
   }
 }
