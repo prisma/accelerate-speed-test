@@ -3,43 +3,28 @@ import * as reactCanvas from '@rive-app/react-canvas';
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useInView } from 'react-intersection-observer';
 
 import DatabaseInfo from "../components/DatabaseInfo";
 import styles from "../styles/index.module.scss"
 
-const Animation = ({ state, name, className, fit, autoplay, badge, badge2, badgeVirginia }: any) => {
-  const [autoplayState, setAutoplay] = useState<boolean>(autoplay)
-
-  const [reference, isInView] = useInView({
-    triggerOnce: true,
-    // rootMargin: "200px"
-    threshold: 0.2,
-  });
-
+const Animation = ({ state, name, className, fit, badge, badge2, badgeVirginia }: any) => {
   const { rive, RiveComponent } = reactCanvas.useRive({
     src: `/animations/${name}.riv`,
-    autoplay: autoplayState,
+    autoplay: false,
     layout: new reactCanvas.Layout({
       fit: fit,
       alignment: reactCanvas.Alignment.Center,
     }),
   });
-
   useEffect(() => {
-    if (isInView) rive?.play();
-  }, [isInView])
-
-  useEffect(() => {
-    if (isInView && state === "running") {
-      setAutoplay(true)
+    if (state === "running") {
       rive?.play();
     } else {
       rive?.stop();
     }
   }, [])
 
-  return <div ref={reference} className={className}>
+  return <div className={className}>
     {badge}
     {badge2}
     {badgeVirginia}

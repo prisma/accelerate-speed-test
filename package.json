@@ -25,7 +25,6 @@
     "prisma": "^5.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-intersection-observer": "^9.5.1",
     "react-simple-maps": "^3.0.0",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
