@@ -8,7 +8,7 @@ import { useInView } from 'react-intersection-observer';
 import DatabaseInfo from "../components/DatabaseInfo";
 import styles from "../styles/index.module.scss"
 
-const Animation = ({ name, className, fit, autoplay, badge, badge2, badgeVirginia }: any) => {
+const Animation = ({ state, name, className, fit, autoplay, badge, badge2, badgeVirginia }: any) => {
   const [autoplayState, setAutoplay] = useState<boolean>(autoplay)
 
   const [reference, isInView] = useInView({
@@ -31,9 +31,11 @@ const Animation = ({ name, className, fit, autoplay, badge, badge2, badgeVirgini
   }, [isInView])
 
   useEffect(() => {
-    if (isInView) {
+    if (isInView && state === "running") {
       setAutoplay(true)
       rive?.play();
+    } else {
+      rive?.stop();
     }
   }, [])
 
@@ -221,7 +223,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main>
+      <main className={styles.main}>
         <nav>
           <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
           <span className="green-badge">Early Access</span>
@@ -279,7 +281,8 @@ export default function Home() {
             <h3><img src="/bolt.svg" /> With Accelerate Cache</h3>
             <div className={styles.illustrationSection}>
               <Animation
-                autoplay={true}
+                autoplay={false}
+                state={state}
                 name="with-accelerate"
                 className={styles.animation}
                 fit={reactCanvas.Fit.FitWidth}
@@ -339,8 +342,9 @@ export default function Home() {
             <h3><img src="/clock.svg" /> Without Accelerate Cache</h3>
             <div className={styles.illustrationSection}>
             <Animation
-              autoplay={true}
+              autoplay={false}
               name="without-accelerate"
+              state={state}
               className={styles.animation}
               fit={reactCanvas.Fit.FitWidth}
               badge={

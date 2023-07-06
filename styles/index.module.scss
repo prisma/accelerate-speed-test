@@ -17,6 +17,11 @@ $red-800: #9B2C2C;
 
 $green-800: #22543D;
 
+.main {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+  "Segoe UI";
+}
+
 .h1 {
   color: white;
   margin-bottom: 40px;
@@ -118,6 +123,7 @@ $green-800: #22543D;
     letter-spacing: -0.72px;
     display: flex;
     align-items: center;
+    font-size: 34px;
     img {
       display: inline-flex;
       margin-right: 12px;
