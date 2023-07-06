@@ -16,13 +16,14 @@ const Animation = ({ state, name, className, fit, badge, badge2, badgeVirginia }
       alignment: reactCanvas.Alignment.Center,
     }),
   });
+
   useEffect(() => {
     if (state === "running") {
       rive?.play();
     } else {
       rive?.stop();
     }
-  }, [])
+  }, [state])
 
   return <div className={className}>
     {badge}
