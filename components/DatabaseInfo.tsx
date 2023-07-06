@@ -1,10 +1,12 @@
 import React from "react";
+
 import styles from "../styles/index.module.scss"
+
 const DatabaseInfo = () => {
   return (
     <table>
       <thead>
-        <tr>
+        <tr className={styles.databaseGrid}>
           <th>Database Type</th>
           <th>Instance Type</th>
           <th>RAM</th>
@@ -14,7 +16,7 @@ const DatabaseInfo = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr className={styles.databaseGrid}>
           <td>
             <span className={styles.badgeGray}>PostgreSQL</span>
           </td>

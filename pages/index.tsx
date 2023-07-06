@@ -397,7 +397,7 @@ export default function Home() {
           ) : (
             <table>
               <thead>
-                <tr>
+                <tr className={styles.speedGrid}>
                   <th id="time">Time</th>
                   <th id="location">Location</th>
                   <th id="accelerate-qpm">Accelerate #qpm</th>
@@ -409,7 +409,7 @@ export default function Home() {
               </thead>
               <tbody>
                 {history.map((record, i) => (
-                  <tr key={i}>
+                  <tr key={i} className={styles.speedGrid}>
                     <td headers="time">{record.time}</td>
                     <td title={record.location} headers="location">
                       {record.location}

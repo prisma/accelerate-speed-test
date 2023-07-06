@@ -51,8 +51,10 @@ $green-800: #22543D;
   > span {
     color: $gray-400;
     margin-bottom: 4px;
+    font-weight: 600;
   }
   > div {
+    font-weight: 700;
     color: white;
   }
 }
@@ -320,4 +322,14 @@ $green-800: #22543D;
     right: -60px;
     transform: translateX(-50%);
   }
+}
+
+.speedGrid {
+  display: grid;
+  grid-template-columns: 0.5fr 1.5fr repeat(5, 1fr);
+}
+
+.databaseGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }
