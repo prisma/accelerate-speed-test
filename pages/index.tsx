@@ -232,11 +232,11 @@ export default function Home() {
         </nav>
         <header className={styles.header}>
           <h1 className={styles.h1}>
-            Accelerate Speed test
+            Accelerate Speed Test
           </h1>
           <div>
             <p>
-              Accelerate cache improved query speed on a <b>500k row dataset</b> by serving data from the nearest cache server, eliminating database round trips in N. Virginia (us-east-1).
+              <a href="https://www.prisma.io/data-platform/accelerate">Accelerate</a> is an automated, global database cache that drastically speeds up your database queries made with Prisma Client. This Speed Test runs a simple count query on a dataset with 500k rows and shows the results with and without using the Accelerate cache.
             </p>
           </div>
         </header>
