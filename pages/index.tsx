@@ -1,10 +1,10 @@
-import { defaultTheme, WebsiteButton } from "@prisma/lens/dist/web";
+import { defaultTheme, Icon, WebsiteButton } from "@prisma/lens/dist/web";
 import * as reactCanvas from '@rive-app/react-canvas';
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-import DatabaseInfo from "../components/DatabaseInfo";
+import { DatabaseInfo, DatabaseInfoMobile } from "../components/DatabaseInfo";
 import styles from "../styles/index.module.scss"
 
 const Animation = ({ state, name, className, fit, badge, badge2, badgeVirginia }: any) => {
@@ -110,6 +110,32 @@ await prisma.linkOpen.count({
 });
 `;
 
+
+
+
+const socialLinks = [
+  {
+    id: "discord",
+    link: "https://discord.gg/KQyTW2H5ca"
+  },
+  {
+    id: "github",
+    link: "https://github.com/prisma"
+  },
+  {
+    id: "slack",
+    link: "https://slack.prisma.io" 
+  },
+  {
+    id: "twitter",
+    link: "https://twitter.com/prisma" 
+  },
+  {
+    id: "youtube",
+    link: "https://www.youtube.com/c/PrismaData"
+  }
+]
+
 export default function Home() {
   const [history, setHistory] = useState<Record[]>([]);
   const [state, setState] = useState<"idle" | "running" | "complete" | "error">(
@@ -210,8 +236,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <main className={styles.main}>
-        <nav>
-          <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
+        <div className={styles.nav}>
+          <a href="https://www.prisma.io/"><Image alt="Prisma logo" src="/logo.svg" width={105} height={32} /></a>
           <span className="green-badge">Early Access</span>
           <span style={{ flex: 1 }}></span>
           <a
@@ -226,10 +252,11 @@ export default function Home() {
             href="https://www.prisma.io/data-platform/accelerate"
             target="_blank"
             rel="noopener noreferrer"
+            className={styles.waitlistbtn}
             color="teal">
               Join the waitlist
           </WebsiteButton>
-        </nav>
+        </div>
         <header className={styles.header}>
           <h1 className={styles.h1}>
             Accelerate Speed Test
@@ -315,7 +342,7 @@ export default function Home() {
                 <li>🌟 Optimal Resource Utilization</li>
               </ul>
               <div className={`${styles.expandBar} ${styles.with} ${showWith && styles.active}`} onClick={() => toggleWith(!showWith)}>
-                Expand to view Prisma Client query
+                Expand<span className={styles.mobile}> to view</span> Prisma Client query
               </div>
               <pre className={`${styles.code} ${!showWith && styles.hide}`}>
                 <code>
@@ -370,7 +397,7 @@ export default function Home() {
                 <li>🚧 Poor Resource Utilization</li>
               </ul>
               <div className={`${styles.expandBar} ${styles.without} ${showWithout && styles.active}`} onClick={() => toggleWithout(!showWithout)}>
-                Expand to view Prisma Client query
+                Expand<span className={styles.mobile}> to view</span> Prisma Client query
               </div>
               <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
                 <code>
@@ -434,11 +461,33 @@ export default function Home() {
         <div className={styles.info}>
           <h4>Database instance used</h4>
           <DatabaseInfo />
+          <DatabaseInfoMobile />
         </div>
       </main>
+      <footer>
+        <div className={styles.footerWrapper}>
+          <div className={styles.logo}>
+            <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
+            <p>© 2022 Prisma Data, Inc.</p>
+          </div>
+          <div className={styles.socials}>
+            {socialLinks.map((e: any) => 
+              <a href={e.link} target="_blank" rel="noopener" key={e.id}>
+                <Icon
+                  color="currentColor"
+                  size="inherit"
+                  icon={`fa-brands fa-${e.id}`}
+                />
+              </a>
+            )}
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
+
+
 
 type RunningResult = {
   event: "withCache" | "withoutCache";

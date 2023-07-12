@@ -2,53 +2,67 @@ import React from "react";
 
 import styles from "../styles/index.module.scss"
 
+const dbInfo = [
+  {
+    title: "Database Type",
+    content: "PostgresSQL"
+  },
+  {
+    title: "Instance Type",
+    content: "db.m5.large"
+  },
+  {
+    title: "RAM",
+    content: "8GB"
+  },
+  {
+    title: "CPU",
+    content: "2 vCPU"
+  },
+  {
+    title: "Location",
+    content: "us-east-1"
+  },
+  {
+    title: "Provider",
+    content: "AWS"
+  }
+]
+
 const DatabaseInfo = () => {
   return (
-    <table>
+    <table className={styles.databaseDesktop}>
       <thead>
         <tr className={styles.databaseGrid}>
-          <th>Database Type</th>
-          <th>Instance Type</th>
-          <th>RAM</th>
-          <th>CPU</th>
-          <th>Location</th>
-          <th>Provider</th>
+          {dbInfo.map((e: any) => <th key={e.title}>{e.title}</th>)}
         </tr>
       </thead>
       <tbody>
         <tr className={styles.databaseGrid}>
-          <td>
-            <span className={styles.badgeGray}>PostgreSQL</span>
-          </td>
-          <td>
-            <span className={styles.badgeGray}>
-            db.m5.large
-          </span>
-          </td>
-          <td>
-            <span className={styles.badgeGray}>
-            8GB
-          </span>
-          </td>
-          <td>
-            <span className={styles.badgeGray}>
-            2 vCPU
-          </span>
-          </td>
-          <td>
-            <span className={styles.badgeGray}>
-            us-east-1
-          </span>
-          </td>
-          <td>
-            <span className={styles.badgeGray}>
-            AWS
-          </span>
-          </td>
+          {dbInfo.map((e: any) => 
+            <td>
+              <span className={styles.badgeGray}>{e.content}</span>
+            </td>
+          )}
         </tr>
       </tbody>
     </table>
   );
 };
 
-export default DatabaseInfo;
+const DatabaseInfoMobile = () => {
+  return (
+    <div className={styles.databaseMobile}>
+      {dbInfo.map((e: any) =>
+        <div className={styles.databaseItem}>
+          <div>{e.title}</div>
+          <p>
+            <span className={styles.badgeGray}>{e.content}</span>
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export { DatabaseInfo, DatabaseInfoMobile };
