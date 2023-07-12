@@ -270,7 +270,7 @@ $mobile-large: 390px;
   .mobile {
     display: none;
     @media (min-width: $tablet-vertical) {
-      display: block;
+      display: inline-block;
     }
   }
   &::after {
