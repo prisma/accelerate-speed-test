@@ -1,13 +1,21 @@
 import { defaultTheme, Icon, WebsiteButton } from "@prisma/lens/dist/web";
-import * as reactCanvas from '@rive-app/react-canvas';
+import * as reactCanvas from "@rive-app/react-canvas";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { DatabaseInfo, DatabaseInfoMobile } from "../components/DatabaseInfo";
-import styles from "../styles/index.module.scss"
+import styles from "../styles/index.module.scss";
 
-const Animation = ({ state, name, className, fit, badge, badge2, badgeVirginia }: any) => {
+const Animation = ({
+  state,
+  name,
+  className,
+  fit,
+  badge,
+  badge2,
+  badgeVirginia,
+}: any) => {
   const { rive, RiveComponent } = reactCanvas.useRive({
     src: `/animations/${name}.riv`,
     autoplay: false,
@@ -23,47 +31,61 @@ const Animation = ({ state, name, className, fit, badge, badge2, badgeVirginia }
     } else {
       rive?.stop();
     }
-  }, [state])
+  }, [state]);
 
-  return <div className={className}>
-    {badge}
-    {badge2}
-    {badgeVirginia}
-    <RiveComponent />
-  </div>
-}
+  return (
+    <div className={className}>
+      {badge}
+      {badge2}
+      {badgeVirginia}
+      <RiveComponent />
+    </div>
+  );
+};
 
 const pageInfo = [
   {
     title: "Application",
-    description: <div>Built with Next.js (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://github.com/vercel/next.js/"
-      >
-        GitHub
-      </a>
-    )</div>,
-    icon: "/github.svg"
+    description: (
+      <div>
+        Built with Next.js (
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://github.com/vercel/next.js/"
+        >
+          GitHub
+        </a>
+        )
+      </div>
+    ),
+    icon: "/github.svg",
   },
   {
     title: "Deployment",
     description: <div>Vercel Edge Functions</div>,
-    icon: "/vercel.svg"
+    icon: "/vercel.svg",
   },
-  { 
+  {
     title: "Database",
-    description: <div>
-      <span>PostgreSQL </span>
-      (<span className={styles.badgeYellow}>
-        <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
-        US-EAST-1
-      </span>)
-    </div> ,
-    icon: "/database.svg"
-  }
-]
+    description: (
+      <div>
+        <span>PostgreSQL </span>(
+        <span className={styles.badgeYellow}>
+          <img
+            src="/locationDot.svg"
+            color={defaultTheme.colors.orange[400]}
+            width="8px"
+            height="15px"
+          />
+          US-EAST-1
+        </span>
+        )
+      </div>
+    ),
+    icon: "/database.svg",
+  },
+];
 const num = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
 });
@@ -81,10 +103,12 @@ const time = new Intl.DateTimeFormat("default", {
   hour12: false,
 });
 
-const CODE_CACHE = <>{`
-await prisma.linkOpen.count({`} 
-  <span>{`  cacheStrategy: { ttl: 3_600 },`} </span>
-  {`  where: {
+const CODE_CACHE = (
+  <>
+    {`
+await prisma.linkOpen.count({`}
+    <span>{`  cacheStrategy: { ttl: 3_600 },`} </span>
+    {`  where: {
     link: {
       User: {
         email: {
@@ -94,7 +118,9 @@ await prisma.linkOpen.count({`}
     },
   },
 });
-`}</>;
+`}
+  </>
+);
 
 const CODE_NO_CACHE = `
 await prisma.linkOpen.count({
@@ -110,31 +136,28 @@ await prisma.linkOpen.count({
 });
 `;
 
-
-
-
 const socialLinks = [
   {
     id: "discord",
-    link: "https://discord.gg/KQyTW2H5ca"
+    link: "https://discord.gg/KQyTW2H5ca",
   },
   {
     id: "github",
-    link: "https://github.com/prisma"
+    link: "https://github.com/prisma",
   },
   {
     id: "slack",
-    link: "https://slack.prisma.io" 
+    link: "https://slack.prisma.io",
   },
   {
     id: "twitter",
-    link: "https://twitter.com/prisma" 
+    link: "https://twitter.com/prisma",
   },
   {
     id: "youtube",
-    link: "https://www.youtube.com/c/PrismaData"
-  }
-]
+    link: "https://www.youtube.com/c/PrismaData",
+  },
+];
 
 export default function Home() {
   const [history, setHistory] = useState<Record[]>([]);
@@ -144,11 +167,27 @@ export default function Home() {
   const [cacheLatency, setCacheLatency] = useState(0);
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
 
-  const [showWith, toggleWith] = useState<boolean>(false)
-  const [showWithout, toggleWithout] = useState<boolean>(false)
+  const [showWith, toggleWith] = useState<boolean>(false);
+  const [showWithout, toggleWithout] = useState<boolean>(false);
+
+  useEffect(() => {
+    // warm up edge functions
+    const abortController = new AbortController();
+
+    Promise.all([
+      fetch("/api/stream", { signal: abortController.signal }),
+      fetch("/api/stream", { signal: abortController.signal }),
+    ])
+      .then(() => {})
+      .catch(() => {});
+
+    return () => {
+      abortController.abort(); // Cancel the fetch requests
+    };
+  }, []);
 
   async function runTest() {
-    window.location.hash='#testArea';
+    window.location.hash = "#testArea";
     setCacheLatency(0);
     setWithoutCacheLatency(0);
     setState("running");
@@ -237,7 +276,9 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.nav}>
-          <a href="https://www.prisma.io/"><Image alt="Prisma logo" src="/logo.svg" width={105} height={32} /></a>
+          <a href="https://www.prisma.io/">
+            <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
+          </a>
           <span className="green-badge">Early Access</span>
           <span style={{ flex: 1 }}></span>
           <a
@@ -253,23 +294,32 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
-            color="teal">
-              Join the waitlist
+            color="teal"
+          >
+            Join the waitlist
           </WebsiteButton>
         </div>
         <header className={styles.header}>
-          <h1 className={styles.h1}>
-            Accelerate Speed Test
-          </h1>
+          <h1 className={styles.h1}>Accelerate Speed Test</h1>
           <div>
             <p>
-              <a href="https://www.prisma.io/data-platform/accelerate">Accelerate</a> is an automated, global database cache that drastically speeds up your database queries made with Prisma Client. This Speed Test runs a simple count query on a dataset with 500k rows and shows the results with and without using the Accelerate cache.
+              <a href="https://www.prisma.io/data-platform/accelerate">
+                Accelerate
+              </a>{" "}
+              is an automated, global database cache that drastically speeds up
+              your database queries made with Prisma Client. This Speed Test
+              runs a simple count query on a dataset with 500k rows and shows
+              the results with and without using the Accelerate cache.
             </p>
           </div>
         </header>
 
         <div className={styles.testBtn}>
-          <WebsiteButton color="teal" disabled={state === "running"} onClick={() => runTest()}>
+          <WebsiteButton
+            color="teal"
+            disabled={state === "running"}
+            onClick={() => runTest()}
+          >
             {state === "idle" && "Run Accelerate speed test"}
             {state === "running" && "Running Accelerate speed test"}
             {state === "complete" && "Run another test"}
@@ -279,19 +329,26 @@ export default function Home() {
         </div>
 
         <div className={styles.pageInfo} id="testArea">
-          {pageInfo.map((e: any, idx: number) => <div key={idx}>
-            <div className={styles.squareIcon}>
-              <img src={e.icon} width="24px" height="24px" />
+          {pageInfo.map((e: any, idx: number) => (
+            <div key={idx}>
+              <div className={styles.squareIcon}>
+                <img src={e.icon} width="24px" height="24px" />
+              </div>
+              <div
+                className={styles.infoText}
+                style={{ fontFamily: defaultTheme.fonts.heading }}
+              >
+                <span>{e.title}</span>
+                <div>{e.description}</div>
+              </div>
             </div>
-            <div className={styles.infoText} style={{fontFamily: defaultTheme.fonts.heading}}>
-              <span>{e.title}</span>
-              <div>{e.description}</div>
-            </div>
-          </div>)}
+          ))}
         </div>
         <div className={styles.testArea}>
           <div className={styles.withAccelerate}>
-            <h3><img src="/bolt.svg" /> With Accelerate Cache</h3>
+            <h3>
+              <img src="/bolt.svg" /> With Accelerate Cache
+            </h3>
             <div className={styles.illustrationSection}>
               <Animation
                 autoplay={false}
@@ -300,20 +357,41 @@ export default function Home() {
                 className={styles.animation}
                 fit={reactCanvas.Fit.FitWidth}
                 badge={
-                  <span className={styles.badgeYellow} style={{ top: "-30px", left: "6%" }}>
-                    <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  <span
+                    className={styles.badgeYellow}
+                    style={{ top: "-30px", left: "6%" }}
+                  >
+                    <img
+                      src="/locationDot.svg"
+                      color={defaultTheme.colors.orange[400]}
+                      width="8px"
+                      height="15px"
+                    />
                     {history?.[0]?.location ?? ""}
                   </span>
                 }
                 badge2={
-                  <span className={styles.badgeYellow} style={{ top: "-30px", left: "35%"}}>
-                    <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  <span
+                    className={styles.badgeYellow}
+                    style={{ top: "-30px", left: "35%" }}
+                  >
+                    <img
+                      src="/locationDot.svg"
+                      color={defaultTheme.colors.orange[400]}
+                      width="8px"
+                      height="15px"
+                    />
                     {history?.[0]?.location ?? ""}
                   </span>
                 }
                 badgeVirginia={
                   <span className={`${styles.badgeYellow} ${styles.virginia}`}>
-                    <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                    <img
+                      src="/locationDot.svg"
+                      color={defaultTheme.colors.orange[400]}
+                      width="8px"
+                      height="15px"
+                    />
                     n.virginia
                   </span>
                 }
@@ -329,50 +407,75 @@ export default function Home() {
                 <span>latency</span>
               </div>
               <p>
-                The result of the database query is cached at the Accelerate caching node in&nbsp;
+                The result of the database query is cached at the Accelerate
+                caching node in&nbsp;
                 <span className={styles.badgeYellow}>
-                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  <img
+                    src="/locationDot.svg"
+                    color={defaultTheme.colors.orange[400]}
+                    width="8px"
+                    height="15px"
+                  />
                   {history?.[0]?.location ?? ""}
-                </span>&nbsp;
-                and retrieved from there:
+                </span>
+                &nbsp; and retrieved from there:
               </p>
               <ul>
                 <li>✨ Reduced latency</li>
                 <li>🚀 Increased Query Capacity</li>
                 <li>🌟 Optimal Resource Utilization</li>
               </ul>
-              <div className={`${styles.expandBar} ${styles.with} ${showWith && styles.active}`} onClick={() => toggleWith(!showWith)}>
-                Expand<span className={styles.mobile}> to view</span> Prisma Client query
+              <div
+                className={`${styles.expandBar} ${styles.with} ${
+                  showWith && styles.active
+                }`}
+                onClick={() => toggleWith(!showWith)}
+              >
+                Expand<span className={styles.mobile}> to view</span> Prisma
+                Client query
               </div>
               <pre className={`${styles.code} ${!showWith && styles.hide}`}>
-                <code>
-                  {CODE_CACHE}
-                </code>
+                <code>{CODE_CACHE}</code>
               </pre>
             </div>
           </div>
           <div className={styles.withoutAccelerate}>
-            <h3><img src="/clock.svg" /> Without Accelerate Cache</h3>
+            <h3>
+              <img src="/clock.svg" /> Without Accelerate Cache
+            </h3>
             <div className={styles.illustrationSection}>
-            <Animation
-              autoplay={false}
-              name="without-accelerate"
-              state={state}
-              className={styles.animation}
-              fit={reactCanvas.Fit.FitWidth}
-              badge={
-                <span className={styles.badgeYellow} style={{ top: "-30px", left: "6%"}}>
-                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
-                  {history?.[0]?.location ?? ""}
-                </span>
-              }
-              badgeVirginia={
-                <span className={`${styles.badgeYellow} ${styles.virginia}`}>
-                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
-                  n.virginia
-                </span>
-              }
-            />
+              <Animation
+                autoplay={false}
+                name="without-accelerate"
+                state={state}
+                className={styles.animation}
+                fit={reactCanvas.Fit.FitWidth}
+                badge={
+                  <span
+                    className={styles.badgeYellow}
+                    style={{ top: "-30px", left: "6%" }}
+                  >
+                    <img
+                      src="/locationDot.svg"
+                      color={defaultTheme.colors.orange[400]}
+                      width="8px"
+                      height="15px"
+                    />
+                    {history?.[0]?.location ?? ""}
+                  </span>
+                }
+                badgeVirginia={
+                  <span className={`${styles.badgeYellow} ${styles.virginia}`}>
+                    <img
+                      src="/locationDot.svg"
+                      color={defaultTheme.colors.orange[400]}
+                      width="8px"
+                      height="15px"
+                    />
+                    n.virginia
+                  </span>
+                }
+              />
             </div>
             <div className={styles.cardInfo}>
               <div className={styles.numbers}>
@@ -384,25 +487,35 @@ export default function Home() {
                 <span>latency</span>
               </div>
               <p>
-              The database query and its response need to travel to the database in&nbsp;
+                The database query and its response need to travel to the
+                database in&nbsp;
                 <span className={styles.badgeYellow}>
-                  <img src="/locationDot.svg" color={defaultTheme.colors.orange[400]} width="8px" height="15px" />
+                  <img
+                    src="/locationDot.svg"
+                    color={defaultTheme.colors.orange[400]}
+                    width="8px"
+                    height="15px"
+                  />
                   {history?.[0]?.location ?? ""}
-                </span>&nbsp;
-                and retrieved from there:
+                </span>
+                &nbsp; and retrieved from there:
               </p>
               <ul>
                 <li>🐢 High latency</li>
                 <li>🪫 Low Query Capacity</li>
                 <li>🚧 Poor Resource Utilization</li>
               </ul>
-              <div className={`${styles.expandBar} ${styles.without} ${showWithout && styles.active}`} onClick={() => toggleWithout(!showWithout)}>
-                Expand<span className={styles.mobile}> to view</span> Prisma Client query
+              <div
+                className={`${styles.expandBar} ${styles.without} ${
+                  showWithout && styles.active
+                }`}
+                onClick={() => toggleWithout(!showWithout)}
+              >
+                Expand<span className={styles.mobile}> to view</span> Prisma
+                Client query
               </div>
               <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
-                <code>
-                  {CODE_NO_CACHE}
-                </code>
+                <code>{CODE_NO_CACHE}</code>
               </pre>
             </div>
           </div>
@@ -471,10 +584,10 @@ export default function Home() {
             <p>© 2022 Prisma Data, Inc.</p>
           </div>
           <div className={styles.socials}>
-            {socialLinks.map((e: any) => 
+            {socialLinks.map((e: any) => (
               <a
                 href={e.link}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
                 key={e.id}
               >
@@ -484,15 +597,13 @@ export default function Home() {
                   icon={`fa-brands fa-${e.id}`}
                 />
               </a>
-            )}
+            ))}
           </div>
         </div>
       </footer>
     </>
   );
 }
-
-
 
 type RunningResult = {
   event: "withCache" | "withoutCache";
