@@ -472,7 +472,12 @@ export default function Home() {
           </div>
           <div className={styles.socials}>
             {socialLinks.map((e: any) => 
-              <a href={e.link} target="_blank" rel="noopener" key={e.id}>
+              <a
+                href={e.link}
+                target="_blank" 
+                rel="noopener noreferrer"
+                key={e.id}
+              >
                 <Icon
                   color="currentColor"
                   size="inherit"
