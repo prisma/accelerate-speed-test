@@ -40,7 +40,7 @@ const DatabaseInfo = () => {
       <tbody>
         <tr className={styles.databaseGrid}>
           {dbInfo.map((e: any) => 
-            <td>
+            <td key={e.title}>
               <span className={styles.badgeGray}>{e.content}</span>
             </td>
           )}
