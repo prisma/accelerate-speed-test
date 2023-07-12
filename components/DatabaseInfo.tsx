@@ -54,7 +54,7 @@ const DatabaseInfoMobile = () => {
   return (
     <div className={styles.databaseMobile}>
       {dbInfo.map((e: any) =>
-        <div className={styles.databaseItem}>
+        <div className={styles.databaseItem} key={e.title}>
           <div>{e.title}</div>
           <p>
             <span className={styles.badgeGray}>{e.content}</span>
