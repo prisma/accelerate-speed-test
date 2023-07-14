@@ -344,7 +344,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className={styles.testArea}>
+        <div className={styles.testArea} id="testArea">
           <div className={styles.withAccelerate}>
             <h3>
               <img src="/bolt.svg" /> With Accelerate Cache

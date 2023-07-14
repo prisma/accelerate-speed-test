@@ -490,14 +490,8 @@ $mobile-large: 390px;
   .githubIcon {
     display: none;
   }
-  .waitlistbtn { 
-    display: none;
-  }
   @media (min-width: $tablet-vertical) {
     .githubIcon {
-      display: block;
-    }
-    .waitlistbtn { 
       display: block;
     }
 
