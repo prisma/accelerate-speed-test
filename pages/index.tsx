@@ -279,7 +279,6 @@ export default function Home() {
           <a href="https://www.prisma.io/">
             <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
           </a>
-          <span className="green-badge">Early Access</span>
           <span style={{ flex: 1 }}></span>
           <a
             href="https://github.com/prisma/accelerate-speed-test"
@@ -295,21 +294,20 @@ export default function Home() {
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
             color="teal"
+            type="secondary"
           >
             Join the waitlist
           </WebsiteButton>
         </div>
         <header className={styles.header}>
-          <h1 className={styles.h1}>Accelerate Speed Test</h1>
+          <p className={styles["eyebrow-headline"]}>
+            Accelerate
+            <span className="green-badge">Early Access</span>
+          </p>
+          <h2 className={styles.h2}>Speed up your database queries with an automated global cache</h2>
           <div>
             <p>
-              <a href="https://www.prisma.io/data-platform/accelerate">
-                Accelerate
-              </a>{" "}
-              is an automated, global database cache that drastically speeds up
-              your database queries made with Prisma Client. This Speed Test
-              runs a simple count query on a dataset with 500k rows and shows
-              the results with and without using the Accelerate cache.
+              This speed test runs a simple count query on a dataset with 500k rows and shows the results with and without the <a href="https://www.prisma.io/data-platform/accelerate">Accelerate</a> cache.
             </p>
           </div>
         </header>

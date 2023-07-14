@@ -2,6 +2,7 @@ $gray-200: rgba(237, 242, 247, 1);
 $gray-300: #E2E8F0;
 $gray-400: #CBD5E0;
 $gray-500: #A0AEC0;
+$gray-600: #718096;
 $gray-700: #4A5568;
 $gray-800: #2D3748;
 
@@ -29,19 +30,40 @@ $mobile-large: 390px;
   max-width: unset;
 }
 
-.h1 {
+.h2 {
   color: white;
   margin-bottom: 40px;
+  margin-top: 16px;
+}
+
+.waitlistbtn {
+  background-color: transparent !important;
 }
 
 .header {
-  margin: 90px auto 44px auto;
+  margin: 45px auto 44px auto;
   max-width: 682px;
   text-align: center;
   p {
     color: $gray-300;
-    max-width: 570px;
+    max-width: 590px;
     margin: 0 auto;
+  }
+  .eyebrow-headline {
+    color: $gray-600;
+    /* DESKTOP/HEADINGS/H5 */
+    font-size: 20px;
+    font-family: Barlow;
+    font-weight: 700;
+    line-height: 100%;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: flex-end;
+    align-items: center;
   }
 }
 
