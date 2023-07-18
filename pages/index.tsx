@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import { DatabaseInfo, DatabaseInfoMobile } from "../components/DatabaseInfo";
 import styles from "../styles/index.module.scss";
+import { GithubIcon } from "../components/GithubIcon";
 
 const Animation = ({
   state,
@@ -59,7 +60,7 @@ const pageInfo = [
         )
       </div>
     ),
-    icon: "/github.svg",
+    icon: <GithubIcon />,
   },
   {
     title: "Deployment",
@@ -78,7 +79,7 @@ const pageInfo = [
             width="8px"
             height="15px"
           />
-          US-EAST-1
+          <span>US-EAST-1</span>
         </span>
         )
       </div>
@@ -286,7 +287,7 @@ export default function Home() {
             className={styles.githubIcon}
             rel="noopener noreferrer"
           >
-            <img src={"./github.svg"} width="32px" height="32px" />
+            <GithubIcon />
           </a>
           <WebsiteButton
             href="https://www.prisma.io/data-platform/accelerate"
@@ -307,7 +308,7 @@ export default function Home() {
           <h2 className={styles.h2}>Speed up your database queries with an automated global cache</h2>
           <div>
             <p>
-              This speed test runs a simple count query on a dataset with 500k rows and shows the results with and without the <a href="https://www.prisma.io/data-platform/accelerate">Accelerate</a> cache.
+              This speed test runs a simple count query on a dataset with 500k rows and shows the results with and without the <a href="https://www.prisma.io/data-platform/accelerate" target="_blank" rel="noopener noreferrer">Accelerate</a> cache.
             </p>
           </div>
         </header>
@@ -326,11 +327,11 @@ export default function Home() {
           </WebsiteButton>
         </div>
 
-        <div className={styles.pageInfo} id="testArea">
+        <div className={styles.pageInfo}>
           {pageInfo.map((e: any, idx: number) => (
             <div key={idx}>
               <div className={styles.squareIcon}>
-                <img src={e.icon} width="24px" height="24px" />
+                {typeof e.icon === "string" ? <img src={e.icon} width="24px" height="24px" /> : e.icon}
               </div>
               <div
                 className={styles.infoText}
@@ -365,7 +366,7 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    {history?.[0]?.location ?? ""}
+                    {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
                   </span>
                 }
                 badge2={
@@ -379,7 +380,7 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    {history?.[0]?.location ?? ""}
+                    {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
                   </span>
                 }
                 badgeVirginia={
@@ -390,7 +391,7 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    n.virginia
+                    <span>n.virginia</span>
                   </span>
                 }
               />
@@ -414,9 +415,9 @@ export default function Home() {
                     width="8px"
                     height="15px"
                   />
-                  {history?.[0]?.location ?? ""}
+                  {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
                 </span>
-                &nbsp; and retrieved from there:
+                &nbsp;and retrieved from there:
               </p>
               <ul>
                 <li>✨ Reduced latency</li>
@@ -429,7 +430,7 @@ export default function Home() {
                 }`}
                 onClick={() => toggleWith(!showWith)}
               >
-                Expand<span className={styles.mobile}> to view</span> Prisma
+                Expand&nbsp;<span className={styles.mobile}> to view</span> Prisma
                 Client query
               </div>
               <pre className={`${styles.code} ${!showWith && styles.hide}`}>
@@ -459,7 +460,7 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    {history?.[0]?.location ?? ""}
+                    {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
                   </span>
                 }
                 badgeVirginia={
@@ -470,7 +471,7 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    n.virginia
+                    <span>n.virginia</span>
                   </span>
                 }
               />
@@ -494,9 +495,9 @@ export default function Home() {
                     width="8px"
                     height="15px"
                   />
-                  {history?.[0]?.location ?? ""}
+                  {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
                 </span>
-                &nbsp; and retrieved from there:
+                &nbsp;and retrieved from there:
               </p>
               <ul>
                 <li>🐢 High latency</li>
@@ -509,7 +510,7 @@ export default function Home() {
                 }`}
                 onClick={() => toggleWithout(!showWithout)}
               >
-                Expand<span className={styles.mobile}> to view</span> Prisma
+                Expand&nbsp;<span className={styles.mobile}> to view&nbsp;</span>Prisma
                 Client query
               </div>
               <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
@@ -579,7 +580,7 @@ export default function Home() {
         <div className={styles.footerWrapper}>
           <div className={styles.logo}>
             <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
-            <p>© 2022 Prisma Data, Inc.</p>
+            <p>© 2023 Prisma Data, Inc.</p>
           </div>
           <div className={styles.socials}>
             {socialLinks.map((e: any) => (
