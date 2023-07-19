@@ -9,20 +9,19 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@next/font": "13.1.1",
-    "@prisma/client": "^4.16.1",
-    "@prisma/extension-accelerate": "^0.3.0",
+    "@prisma/client": "^5.0.0",
+    "@prisma/extension-accelerate": "0.0.0-experimental-fef37a5",
     "@prisma/lens": "^0.0.372",
     "@types/node": "18.11.18",
-    "@types/react": "18.0.26",
-    "@types/react-dom": "18.0.10",
-    "@vercel/edge": "^0.2.6",
-    "eslint": "8.31.0",
-    "eslint-config-next": "13.1.1",
-    "next": "13.1.1",
-    "prisma": "^4.16.1",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7",
+    "@vercel/edge": "^0.3.4",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10",
+    "next": "13.4.10",
+    "prisma": "^5.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.4"
+    "typescript": "5.1.6"
   }
 }
