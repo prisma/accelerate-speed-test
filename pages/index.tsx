@@ -290,14 +290,14 @@ export default function Home() {
             <GithubIcon />
           </a>
           <WebsiteButton
-            href="https://prisma-data.typeform.com/to/WwPDKEQ5"
+            href="https://cloudprojects.prisma.io/"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
             color="teal"
             type="secondary"
           >
-            Get started
+            Get started now
           </WebsiteButton>
         </div>
         <header className={styles.header}>
