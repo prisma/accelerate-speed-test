@@ -290,7 +290,7 @@ export default function Home() {
             <GithubIcon />
           </a>
           <WebsiteButton
-            href="https://www.prisma.io/data-platform/accelerate"
+            href="https://prisma-data.typeform.com/to/WwPDKEQ5"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
