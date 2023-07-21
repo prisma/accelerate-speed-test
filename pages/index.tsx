@@ -297,18 +297,29 @@ export default function Home() {
             color="teal"
             type="secondary"
           >
-            Join the waitlist
+            Get started
           </WebsiteButton>
         </div>
         <header className={styles.header}>
           <p className={styles["eyebrow-headline"]}>
             Accelerate
-            <span className="green-badge">Early Access</span>
+            <span className="green-badge">Preview</span>
           </p>
-          <h2 className={styles.h2}>Speed up your database queries with an automated global cache</h2>
+          <h2 className={styles.h2}>
+            Speed up your database queries with an automated global cache
+          </h2>
           <div>
             <p>
-              This speed test runs a simple count query on a dataset with 500k rows and shows the results with and without the <a href="https://www.prisma.io/data-platform/accelerate" target="_blank" rel="noopener noreferrer">Accelerate</a> cache.
+              This speed test runs a simple count query on a dataset with 500k
+              rows and shows the results with and without the{" "}
+              <a
+                href="https://www.prisma.io/data-platform/accelerate"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Accelerate
+              </a>{" "}
+              cache.
             </p>
           </div>
         </header>
@@ -331,7 +342,11 @@ export default function Home() {
           {pageInfo.map((e: any, idx: number) => (
             <div key={idx}>
               <div className={styles.squareIcon}>
-                {typeof e.icon === "string" ? <img src={e.icon} width="24px" height="24px" /> : e.icon}
+                {typeof e.icon === "string" ? (
+                  <img src={e.icon} width="24px" height="24px" />
+                ) : (
+                  e.icon
+                )}
               </div>
               <div
                 className={styles.infoText}
@@ -366,7 +381,9 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
+                    {history?.[0]?.location ? (
+                      <span>{history?.[0]?.location}</span>
+                    ) : null}
                   </span>
                 }
                 badge2={
@@ -380,7 +397,9 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
+                    {history?.[0]?.location ? (
+                      <span>{history?.[0]?.location}</span>
+                    ) : null}
                   </span>
                 }
                 badgeVirginia={
@@ -415,7 +434,9 @@ export default function Home() {
                     width="8px"
                     height="15px"
                   />
-                  {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
+                  {history?.[0]?.location ? (
+                    <span>{history?.[0]?.location}</span>
+                  ) : null}
                 </span>
                 &nbsp;and retrieved from there:
               </p>
@@ -430,8 +451,8 @@ export default function Home() {
                 }`}
                 onClick={() => toggleWith(!showWith)}
               >
-                Expand&nbsp;<span className={styles.mobile}> to view</span> Prisma
-                Client query
+                Expand&nbsp;<span className={styles.mobile}> to view</span>{" "}
+                Prisma Client query
               </div>
               <pre className={`${styles.code} ${!showWith && styles.hide}`}>
                 <code>{CODE_CACHE}</code>
@@ -460,7 +481,9 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
+                    {history?.[0]?.location ? (
+                      <span>{history?.[0]?.location}</span>
+                    ) : null}
                   </span>
                 }
                 badgeVirginia={
@@ -495,7 +518,9 @@ export default function Home() {
                     width="8px"
                     height="15px"
                   />
-                  {history?.[0]?.location ? <span>{history?.[0]?.location}</span> : null }
+                  {history?.[0]?.location ? (
+                    <span>{history?.[0]?.location}</span>
+                  ) : null}
                 </span>
                 &nbsp;and retrieved from there:
               </p>
@@ -510,7 +535,8 @@ export default function Home() {
                 }`}
                 onClick={() => toggleWithout(!showWithout)}
               >
-                Expand&nbsp;<span className={styles.mobile}> to view&nbsp;</span>Prisma
+                Expand&nbsp;
+                <span className={styles.mobile}> to view&nbsp;</span>Prisma
                 Client query
               </div>
               <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
