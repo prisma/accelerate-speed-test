@@ -1,12 +1,12 @@
-import { defaultTheme, Icon, WebsiteButton } from "@prisma/lens/dist/web";
+import { Body, defaultTheme, H2, H3, Icon, Subtitle, WebsiteButton } from "@prisma/lens/dist/web";
 import * as reactCanvas from "@rive-app/react-canvas";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { DatabaseInfo, DatabaseInfoMobile } from "../components/DatabaseInfo";
-import styles from "../styles/index.module.scss";
 import { GithubIcon } from "../components/GithubIcon";
+import styles from "../styles/index.module.scss";
 
 const Animation = ({
   state,
@@ -305,10 +305,10 @@ export default function Home() {
             Accelerate
             <span className="green-badge">Preview</span>
           </p>
-          <h2 className={styles.h2}>
+          <H2 className={styles.h2}>
             Speed up your database queries with an automated global cache
-          </h2>
-          <div>
+          </H2>
+          <Body>
             <p>
               This speed test runs a simple count query on a dataset with 500k
               rows and shows the results with and without the{" "}
@@ -321,7 +321,7 @@ export default function Home() {
               </a>{" "}
               cache.
             </p>
-          </div>
+          </Body>
         </header>
 
         <div className={styles.testBtn}>
@@ -348,21 +348,21 @@ export default function Home() {
                   e.icon
                 )}
               </div>
-              <div
+              <Body
                 className={styles.infoText}
                 style={{ fontFamily: defaultTheme.fonts.heading }}
               >
                 <span>{e.title}</span>
                 <div>{e.description}</div>
-              </div>
+              </Body>
             </div>
           ))}
         </div>
         <div className={styles.testArea} id="testArea">
           <div className={styles.withAccelerate}>
-            <h3>
+            <H3>
               <img src="/bolt.svg" /> With Accelerate Cache
-            </h3>
+            </H3>
             <div className={styles.illustrationSection}>
               <Animation
                 autoplay={false}
@@ -415,7 +415,7 @@ export default function Home() {
                 }
               />
             </div>
-            <div className={styles.cardInfo}>
+            <Body className={styles.cardInfo}>
               <div className={styles.numbers}>
                 <h4>{num.format((1_000 / cacheLatency) * 60)}</h4>
                 <span>queries per minute</span>
@@ -457,12 +457,12 @@ export default function Home() {
               <pre className={`${styles.code} ${!showWith && styles.hide}`}>
                 <code>{CODE_CACHE}</code>
               </pre>
-            </div>
+            </Body>
           </div>
           <div className={styles.withoutAccelerate}>
-            <h3>
+            <H3>
               <img src="/clock.svg" /> Without Accelerate Cache
-            </h3>
+            </H3>
             <div className={styles.illustrationSection}>
               <Animation
                 autoplay={false}
@@ -499,7 +499,7 @@ export default function Home() {
                 }
               />
             </div>
-            <div className={styles.cardInfo}>
+            <Body className={styles.cardInfo}>
               <div className={styles.numbers}>
                 <h4>{num.format((1_000 / withoutCacheLatency) * 60)}</h4>
                 <span>queries per minute</span>
@@ -542,13 +542,13 @@ export default function Home() {
               <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
                 <code>{CODE_NO_CACHE}</code>
               </pre>
-            </div>
+            </Body>
           </div>
         </div>
         <div className={styles.results}>
           <h4>Speed test history</h4>
           {history.length === 0 ? (
-            <p>No tests ran yet</p>
+            <Body>No tests ran yet</Body>
           ) : (
             <table>
               <thead>
@@ -606,7 +606,7 @@ export default function Home() {
         <div className={styles.footerWrapper}>
           <div className={styles.logo}>
             <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
-            <p>© 2023 Prisma Data, Inc.</p>
+            <Body>© 2023 Prisma Data, Inc.</Body>
           </div>
           <div className={styles.socials}>
             {socialLinks.map((e: any) => (

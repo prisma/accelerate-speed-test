@@ -45,6 +45,9 @@ $mobile-large: 390px;
   margin: 45px auto 44px auto;
   max-width: 682px;
   text-align: center;
+  a {
+    color: currentColor;
+  }
   p {
     color: $gray-300;
     max-width: 590px;
@@ -123,6 +126,9 @@ $mobile-large: 390px;
     gap: 23px;
     width: calc((100% / 3) - (88px / 3));
     justify-content: flex-start;
+  }
+  a {
+    color: currentColor;
   }
 }
 
@@ -390,6 +396,9 @@ $mobile-large: 390px;
     margin-bottom: 55px;
     width: 100%;
   }
+  > div {
+    margin: 18px 0;
+  }
 }
 
 .badgeGreen, .badgeRed, .badgeGray {
@@ -483,7 +492,7 @@ $mobile-large: 390px;
   padding: 72px 32px;
   gap: 32px;
   margin: 0 auto;
-  p {
+  div {
     margin: 8px 0 0 0;
   }
   a {
