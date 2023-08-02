@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@prisma/client": "^5.0.0",
-    "@prisma/extension-accelerate": "^0.4.0",
+    "@prisma/client": "^5.1.0",
+    "@prisma/extension-accelerate": "^0.5.0",
     "@prisma/lens": "^0.0.372",
     "@types/node": "18.11.18",
     "@types/react": "18.2.15",
@@ -19,7 +19,7 @@
     "eslint": "8.45.0",
     "eslint-config-next": "13.4.10",
     "next": "13.4.10",
-    "prisma": "^5.0.0",
+    "prisma": "^5.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "typescript": "5.1.6"
