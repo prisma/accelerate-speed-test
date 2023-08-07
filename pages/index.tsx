@@ -298,7 +298,7 @@ export default function Home() {
             <GithubIcon />
           </a>
           <WebsiteButton
-            href="https://cloudprojects.prisma.io/"
+            href="https://pris.ly/pdp"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
