@@ -1,4 +1,12 @@
-import { Body, defaultTheme, H2, H3, Icon, Subtitle, WebsiteButton } from "@prisma/lens/dist/web";
+import {
+  Body,
+  defaultTheme,
+  H2,
+  H3,
+  Icon,
+  Subtitle,
+  WebsiteButton,
+} from "@prisma/lens/dist/web";
 import * as reactCanvas from "@rive-app/react-canvas";
 import Head from "next/head";
 import Image from "next/image";
@@ -434,9 +442,7 @@ export default function Home() {
                     width="8px"
                     height="15px"
                   />
-                  {history?.[0]?.location ? (
-                    <span>{history?.[0]?.location}</span>
-                  ) : null}
+                  {<span>N.VIRGINIA</span>}
                 </span>
                 &nbsp;and retrieved from there:
               </p>
@@ -494,7 +500,7 @@ export default function Home() {
                       width="8px"
                       height="15px"
                     />
-                    <span>n.virginia</span>
+                    <span>N.VIRGINIA</span>
                   </span>
                 }
               />
@@ -518,9 +524,7 @@ export default function Home() {
                     width="8px"
                     height="15px"
                   />
-                  {history?.[0]?.location ? (
-                    <span>{history?.[0]?.location}</span>
-                  ) : null}
+                  {<span>N.VIRGINIA</span>}
                 </span>
                 &nbsp;and retrieved from there:
               </p>
