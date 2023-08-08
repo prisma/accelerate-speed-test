@@ -1,12 +1,4 @@
-import {
-  Body,
-  defaultTheme,
-  H2,
-  H3,
-  Icon,
-  Subtitle,
-  WebsiteButton,
-} from "@prisma/lens/dist/web";
+import { Body, defaultTheme, H2, H3, Icon, Subtitle, WebsiteButton } from "@prisma/lens/dist/web";
 import * as reactCanvas from "@rive-app/react-canvas";
 import Head from "next/head";
 import Image from "next/image";
