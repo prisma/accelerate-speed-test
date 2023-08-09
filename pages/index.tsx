@@ -296,13 +296,13 @@ export default function Home() {
             color="teal"
             type="secondary"
           >
-            Get started now
+            Join the waitlist
           </WebsiteButton>
         </div>
         <header className={styles.header}>
           <p className={styles["eyebrow-headline"]}>
             Accelerate
-            <span className="green-badge">Preview</span>
+            <span className="green-badge">Early Access</span>
           </p>
           <H2 className={styles.h2}>
             Speed up your database queries with an automated global cache
