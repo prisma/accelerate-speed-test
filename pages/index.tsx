@@ -30,7 +30,7 @@ const Animation = ({
     if (state === "running") {
       rive?.play();
     } else {
-      rive?.stop();
+      rive?.pause();
     }
   }, [state]);
 
