@@ -327,14 +327,15 @@ export default function Home() {
         <div className={styles.testBtn}>
           <WebsiteButton
             color="teal"
-            disabled={state === "running"}
+            className={state === "running" ? styles.runningBtn : ""}
             onClick={() => runTest()}
           >
             {state === "idle" && "Run Accelerate speed test"}
             {state === "running" && "Running Accelerate speed test"}
             {state === "complete" && "Run another test"}
             {state === "error" && "Try Again"}
-            <img src="/arrow-down.svg" />
+            
+            <img src={state === "running" ? "/arrow-rotate-right.svg" : "/arrow-down.svg"} />
           </WebsiteButton>
         </div>
 

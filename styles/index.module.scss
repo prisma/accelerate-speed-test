@@ -156,6 +156,24 @@ $mobile-large: 390px;
   img {
     margin-left: 8px;
   }
+  button {
+    padding: 10px 24px;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 700;
+  }
+  .runningBtn {
+    border: 1px solid #154F47;
+    background-color: #154F47;
+    color: white;
+    pointer-events: none;
+    cursor: not-allowed;
+    &:hover {
+      border: 1px solid #154F47;
+      background-color: #154F47;
+      color: white;
+    }
+  }
 }
 
 .testArea {
