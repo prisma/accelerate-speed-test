@@ -169,7 +169,6 @@ export default function Home() {
   const [withoutCacheLatency, setWithoutCacheLatency] = useState(0);
 
   const [showWith, toggleWith] = useState<boolean>(false);
-  const [showWithout, toggleWithout] = useState<boolean>(false);
 
   useEffect(() => {
     // warm up edge functions
@@ -528,15 +527,15 @@ export default function Home() {
               </ul>
               <div
                 className={`${styles.expandBar} ${styles.without} ${
-                  showWithout && styles.active
+                  showWith && styles.active
                 }`}
-                onClick={() => toggleWithout(!showWithout)}
+                onClick={() => toggleWith(!showWith)}
               >
                 Expand&nbsp;
                 <span className={styles.mobile}> to view&nbsp;</span>Prisma
                 Client query
               </div>
-              <pre className={`${styles.code} ${!showWithout && styles.hide}`}>
+              <pre className={`${styles.code} ${!showWith && styles.hide}`}>
                 <code>{CODE_NO_CACHE}</code>
               </pre>
             </Body>
