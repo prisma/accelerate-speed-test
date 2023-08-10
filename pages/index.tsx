@@ -289,20 +289,20 @@ export default function Home() {
             <GithubIcon />
           </a>
           <WebsiteButton
-            href="https://prisma-data.typeform.com/to/WwPDKEQ5"
+            href="https://pris.ly/pdp"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
             color="teal"
             type="secondary"
           >
-            Join the waitlist
+            Get Started
           </WebsiteButton>
         </div>
         <header className={styles.header}>
           <p className={styles["eyebrow-headline"]}>
             Accelerate
-            <span className="green-badge">Early Access</span>
+            <span className="green-badge">Preview</span>
           </p>
           <H2 className={styles.h2}>
             Speed up your database queries with an automated global cache
