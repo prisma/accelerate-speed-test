@@ -289,7 +289,7 @@ export default function Home() {
             <GithubIcon />
           </a>
           <WebsiteButton
-            href="https://pris.ly/pdp"
+            href="https://prisma-data.typeform.com/to/WwPDKEQ5"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
