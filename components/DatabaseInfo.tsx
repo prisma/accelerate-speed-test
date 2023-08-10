@@ -5,7 +5,7 @@ import styles from "../styles/index.module.scss"
 const dbInfo = [
   {
     title: "Database Protocol",
-    content: "PostgresSQL"
+    content: "PostgreSQL"
   },
   {
     title: "Instance Type",
