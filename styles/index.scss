@@ -1,0 +1,396 @@
+/** Inter Regular */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Inter-Regular.woff2');
+}
+
+/** Inter Medium */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Inter-Medium.woff2');
+}
+
+/** Inter Italic */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Inter-Italic.woff2');
+}
+
+/** Inter SemiBold */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Inter-SemiBold.woff2');
+}
+
+/** Inter SemiBold Italic */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Inter-SemiBoldItalic.woff2');
+}
+
+/** Inter Bold */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Inter-Bold.woff2');
+}
+
+/** Inter Bold Italic */
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+  src: url('../fonts/Inter-BoldItalic.woff2');
+}
+
+/** Barlow Bold */
+@font-face {
+  font-family: 'Barlow';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/Barlow-Bold.woff2');
+}
+
+@font-face {
+  font-family: 'JetBrainsMono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('../fonts/JetBrainsMono-Regular.woff2');
+}
+
+html {
+  background-color: #1A202C;
+}
+main {
+  padding: 0 1rem;
+  display: grid;
+  font-family: Inter;
+  gap: 3.5rem;
+  grid-template-areas:
+    "nav"
+    "header"
+    "action"
+    "cache"
+    "noCache"
+    "results"
+    "info";
+  grid-template-columns: 1fr;
+  grid-auto-rows: min-content;
+  max-width: 1038px;
+  margin: 1.875rem auto 6.5rem auto;
+}
+
+@media (min-width: 64rem) {
+  main {
+    padding: 0;
+    grid-template-areas:
+      "nav nav"
+      "header header"
+      "action action"
+      "cache noCache"
+      "results results"
+      "info info";
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+section.card {
+  border: 1px solid #edf2f7;
+  border-radius: 0.375rem;
+  padding: 2rem 1.5rem;
+  color: #2d3748;
+}
+
+section h2 {
+  color: #2d3748;
+  font-size: 1.5rem;
+  line-height: 1.16;
+  font-weight: 600;
+}
+
+section.card.idle dl,
+section.card.running dl {
+  color: #718096;
+}
+
+section.card.running dd {
+  animation: flash 1s linear infinite;
+}
+
+dd {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  text-align: center;
+}
+
+dt {
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+section .badge {
+  display: inline-block;
+  white-space: nowrap;
+  align-self: baseline;
+  padding: 0 0.375rem;
+  border-radius: 2px;
+  font-size: 11px;
+  line-height: 1.7;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.green-badge {
+  border: 1px solid #04C8BB;
+  font-family: 'Barlow',sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  line-height: 11px;
+  letter-spacing: 10%;
+  border-radius: 99px;
+  padding: 6px 8px;
+  text-transform: uppercase;
+  color: #04C8BB;
+}
+
+section .badge.green {
+  background: #d9f9f6;
+  color: #154f47;
+}
+
+section .badge.gray {
+  background: #f7fafc;
+  color: #2d3748;
+}
+
+section .badge.red {
+  background: #fff5f5;
+  color: #9b2c2c;
+}
+
+.code {
+  margin-top: -1rem;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.code pre {
+  white-space: pre;
+}
+
+section.info {
+  grid-area: info;
+  align-items: flex-start;
+}
+
+section.info p {
+  color: #718096;
+}
+
+section.info table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+section.info table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+section.info table th,
+section.info table td {
+  padding: 1.25rem 0.5rem 1.25rem 0;
+}
+
+section.info table th {
+  color: #1a202c;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+section.info table td {
+  color: #2d3748;
+  line-height: 1;
+}
+
+section.info table th#time,
+section.info table th#speedup {
+  width: 8%;
+}
+
+section.info table th#location {
+  width: 20%;
+}
+
+section.results {
+  grid-area: results;
+  align-items: flex-start;
+}
+
+section.results p {
+  color: #718096;
+}
+
+section.results table {
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+section.results table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+section.results table th,
+section.results table td {
+  padding: 1.25rem 0.5rem 1.25rem 0;
+}
+
+section.results table th {
+  color: #1a202c;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+section.results table td {
+  color: #2d3748;
+  line-height: 1;
+}
+
+section.results table th#time,
+section.results table th#speedup {
+  width: 8%;
+}
+
+section.results table th#location {
+  width: 20%;
+}
+
+section.results table td[headers="location"] {
+  color: #718096;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.accelerate-image-group {
+  height: 150px;
+  width: 65%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.accelerate-database-img {
+  width: 40px;
+}
+
+.accelerate-server-img {
+  size: 20px;
+  width: 40px;
+}
+
+.accelerate-cache-img {
+  size: 40px;
+  width: 40px;
+}
+
+.line-space {
+  width: 70px;
+}
+
+.line-longer-space {
+  width: 150px;
+}
+
+.line {
+  position: relative;
+  height: 0px;
+  width: 1px;
+  border-bottom: 1px solid #000;
+  animation: moveLine 0.25s forwards infinite;
+}
+
+.line-longer {
+  position: relative;
+  height: 0px;
+  width: 1px;
+  border-bottom: 1px solid #000;
+  animation: moveLineLonger 3s forwards infinite;
+}
+
+.line-longer:before,
+.line::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 100%;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid #000;
+}
+
+@keyframes moveLine {
+  0% {
+    width: 1px;
+    left: 0;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+@keyframes moveLineLonger {
+  0% {
+    width: 1px;
+    left: 0;
+  }
+  100% {
+    width: 90%;
+  }
+}

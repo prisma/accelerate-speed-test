@@ -11,7 +11,10 @@
   "dependencies": {
     "@prisma/client": "^5.1.0",
     "@prisma/extension-accelerate": "^0.5.0",
-    "@prisma/lens": "^0.0.372",
+    "@next/font": "13.1.1",
+    "@prisma/lens": "^0.0.469",
+    "@rive-app/canvas": "^1.1.5",
+    "@rive-app/react-canvas": "^3.0.46",
     "@types/node": "18.11.18",
     "@types/react": "18.2.15",
     "@types/react-dom": "18.2.7",
@@ -22,6 +25,15 @@
     "prisma": "^5.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-simple-maps": "^3.0.0",
+    "sass": "^1.63.6",
+    "sass-loader": "^13.3.2",
+    "styled-components": "5.3.6",
     "typescript": "5.1.6"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
+    "@types/react-simple-maps": "^3.0.0",
+    "@types/styled-components": "5.1.26"
   }
 }
