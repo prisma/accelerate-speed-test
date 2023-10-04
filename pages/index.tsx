@@ -302,7 +302,6 @@ export default function Home() {
         <header className={styles.header}>
           <p className={styles["eyebrow-headline"]}>
             Accelerate
-            <span className="green-badge">Preview</span>
           </p>
           <H2 className={styles.h2}>
             Speed up your database queries with an automated global cache
