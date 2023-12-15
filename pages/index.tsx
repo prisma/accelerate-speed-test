@@ -272,7 +272,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.nav}>
-          <a href="https://www.prisma.io/?utm_source=accelerate-speedtest">
+          <a href="https://www.prisma.io/">
             <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
           </a>
           <span style={{ flex: 1 }}></span>
