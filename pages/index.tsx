@@ -140,15 +140,11 @@ await prisma.linkOpen.count({
 const socialLinks = [
   {
     id: "discord",
-    link: "https://discord.gg/KQyTW2H5ca",
+    link: "https://pris.ly/discord",
   },
   {
     id: "github",
     link: "https://github.com/prisma",
-  },
-  {
-    id: "slack",
-    link: "https://slack.prisma.io",
   },
   {
     id: "twitter",
@@ -276,7 +272,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.nav}>
-          <a href="https://www.prisma.io/">
+          <a href="https://www.prisma.io/?utm_source=accelerate-speedtest">
             <Image alt="Prisma logo" src="/logo.svg" width={105} height={32} />
           </a>
           <span style={{ flex: 1 }}></span>
@@ -289,7 +285,7 @@ export default function Home() {
             <GithubIcon />
           </a>
           <WebsiteButton
-            href="https://pris.ly/pdp"
+            href="https://console.prisma.io/login?utm_source=accelerate-speedtest"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.waitlistbtn}
@@ -311,7 +307,7 @@ export default function Home() {
               This speed test runs a simple count query on a dataset with 500k
               rows and shows the results with and without the{" "}
               <a
-                href="https://www.prisma.io/data-platform/accelerate"
+                href="https://www.prisma.io/data-platform/accelerate?utm_source=accelerate-speedtest"
                 target="_blank"
                 rel="noopener noreferrer"
               >
