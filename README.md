@@ -1,12 +1,12 @@
 # Accelerate Speed Test
 
-This app demonstrates the performance benefits of [Accelerate](https://www.prisma.io/data-platform/accelerate), a new Early Access product by Prisma. Accelerate provides a global cache with built-in connection pooling.
+This app demonstrates the performance benefits of [Accelerate](https://www.prisma.io/data-platform/accelerate?utm_source=accelerate-speedtest), a new product by Prisma. Accelerate provides a global cache with built-in connection pooling.
 
 The Accelerate Speed Test is a Next.js app using Edge API Routes to serve cached data at the edge. When the speed test begins it will start two concurrent tests, one with cache and one without, that will each run as many sequential Prisma `count` operations as they can. The results are streamed to the UI and displayed for comparison.
 
 ## Setup
 
-To run the Accelerate Speed Test locally or deploy it yourself, you'll first need an invitation to Accelerate Early Access. [Join the waitlist](https://www.prisma.io/data-platform/accelerate) if you haven't already.
+To run the Accelerate Speed Test locally or deploy it yourself, you'll first need a Prisma Data Platform account. [Create one here](https://console.prisma.io/login?utm_source=accelerate-speedtest) if you haven't already.
 
 Next, you'll need a database. The Prisma Schema in this repository uses PostgreSQL, but you can substitute it with another database if desired. Create a new Accelerate project for the database to retrieve an Accelerate connection string.
 
