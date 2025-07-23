@@ -587,11 +587,6 @@ export default function Home() {
             </table>
           )}
         </div>
-        <div className={styles.info}>
-          <h4>Database instance used</h4>
-          <DatabaseInfo />
-          <DatabaseInfoMobile />
-        </div>
       </main>
       <footer>
         <div className={styles.footerWrapper}>
