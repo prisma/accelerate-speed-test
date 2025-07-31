@@ -3,8 +3,6 @@ import * as reactCanvas from "@rive-app/react-canvas";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-import { DatabaseInfo, DatabaseInfoMobile } from "../components/DatabaseInfo";
 import { GithubIcon } from "../components/GithubIcon";
 import styles from "../styles/index.module.scss";
 
@@ -585,11 +583,6 @@ export default function Home() {
             </table>
           )}
         </div>
-        {/* <div className={styles.info}>
-          <h4>Database instance used</h4>
-          <DatabaseInfo />
-          <DatabaseInfoMobile />
-        </div> */}
       </main>
       <footer>
         <div className={styles.footerWrapper}>
