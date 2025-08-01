@@ -14,7 +14,19 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
   event.waitUntil(
     sendAnalytics("accelerate.demo.ping", { withCache, withoutCache }, req)
   );
-  return NextResponse.json({ withCache, withoutCache });
+  return NextResponse.json(
+    { withCache, withoutCache },
+    {
+      headers: {
+        "Content-Type": "text/plain",
+        "Cache-Control":
+          "no-store, no-cache, must-revalidate, proxy-revalidate",
+        Pragma: "no-cache",
+        Expires: "0",
+        "Surrogate-Control": "no-store",
+      },
+    }
+  );
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {

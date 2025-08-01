@@ -3,10 +3,10 @@ import * as reactCanvas from "@rive-app/react-canvas";
 import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
-import { DatabaseInfo, DatabaseInfoMobile } from "../components/DatabaseInfo";
 import { GithubIcon } from "../components/GithubIcon";
 import styles from "../styles/index.module.scss";
+
+export const dynamic = 'force-dynamic'
 
 const Animation = ({
   state,
@@ -174,8 +174,8 @@ export default function Home() {
       fetch("/api/stream", { signal: abortController.signal }),
       fetch("/api/stream", { signal: abortController.signal }),
     ])
-      .then(() => {})
-      .catch(() => {});
+      .then(() => { })
+      .catch(() => { });
 
     return () => {
       abortController.abort(); // Cancel the fetch requests
@@ -328,7 +328,7 @@ export default function Home() {
             {state === "running" && "Running Accelerate speed test"}
             {state === "complete" && "Run another test"}
             {state === "error" && "Try Again"}
-            
+
             <img src={state === "running" ? "/arrow-rotate-right.svg" : "/arrow-down.svg"} />
           </WebsiteButton>
         </div>
@@ -439,9 +439,8 @@ export default function Home() {
                 <li>🌟 Optimal Resource Utilization</li>
               </ul>
               <div
-                className={`${styles.expandBar} ${styles.with} ${
-                  showWith && styles.active
-                }`}
+                className={`${styles.expandBar} ${styles.with} ${showWith && styles.active
+                  }`}
                 onClick={() => toggleWith(!showWith)}
               >
                 Expand&nbsp;<span className={styles.mobile}> to view</span>{" "}
@@ -521,9 +520,8 @@ export default function Home() {
                 <li>🚧 Poor Resource Utilization</li>
               </ul>
               <div
-                className={`${styles.expandBar} ${styles.without} ${
-                  showWith && styles.active
-                }`}
+                className={`${styles.expandBar} ${styles.without} ${showWith && styles.active
+                  }`}
                 onClick={() => toggleWith(!showWith)}
               >
                 Expand&nbsp;
@@ -587,11 +585,6 @@ export default function Home() {
             </table>
           )}
         </div>
-        <div className={styles.info}>
-          <h4>Database instance used</h4>
-          <DatabaseInfo />
-          <DatabaseInfoMobile />
-        </div>
       </main>
       <footer>
         <div className={styles.footerWrapper}>
@@ -636,14 +629,14 @@ type FinishResult = {
     withoutCache: number;
     ctx: {
       geo:
-        | {
-            city?: string | undefined;
-            country?: string | undefined;
-            region?: string | undefined;
-            latitude?: string | undefined;
-            longitude?: string | undefined;
-          }
-        | undefined;
+      | {
+        city?: string | undefined;
+        country?: string | undefined;
+        region?: string | undefined;
+        latitude?: string | undefined;
+        longitude?: string | undefined;
+      }
+      | undefined;
     };
   };
 };
