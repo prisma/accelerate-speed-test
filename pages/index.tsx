@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { GithubIcon } from "../components/GithubIcon";
 import styles from "../styles/index.module.scss";
 
+export const dynamic = 'force-dynamic'
+
 const Animation = ({
   state,
   name,
