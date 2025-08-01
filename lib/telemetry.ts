@@ -1,5 +1,4 @@
-import { geolocation } from "@vercel/edge";
-import { NextRequest } from "next/server";
+import { NextRequest } from "next/server"; // still used for type, but comes from next/server
 
 const ENDPOINT = process.env.GRAFANA_ENDPOINT;
 const USER_ID = process.env.GRAFANA_USER_ID;
@@ -7,12 +6,7 @@ const API_KEY = process.env.GRAFANA_API_KEY;
 
 /**
  * Sends analytics to Grafana Cloud using InfluxDB line protocol.
- * Grafana Cloud does not support pushing analytics via OpenTelemetry HTTP.
- * @see https://grafana.com/docs/grafana-cloud/data-configuration/metrics/metrics-influxdb/push-from-telegraf/#pushing-from-applications-directly
- * @see https://docs.influxdata.com/influxdb/v2.6/reference/syntax/line-protocol/
- * @param measure The name of the analytics event
- * @param fields Values recordings
- * @param tags Attributes to index
+ * Works on Cloudflare Pages using next-on-pages.
  */
 export async function sendAnalytics(
   measure:
@@ -23,35 +17,49 @@ export async function sendAnalytics(
   req: NextRequest,
   tags: Record<string, string> = {}
 ): Promise<void> {
-  if (ENDPOINT) {
-    const { region: vercelEdgeRegion = "" } = geolocation(req);
-    const timestamp = Date.now() * 1_000_000;
-    const defaultTags = {
-      ...req.geo,
-      vercelEdgeRegion,
-      colo: vercelEdgeRegion.replace(/[0-9]+/, "").toUpperCase(),
-    };
-    const tag = Object.entries({ ...defaultTags, ...tags })
-      .filter(([, value]) => Boolean(value))
-      .map(([key, value]) => `${key}=${value.replaceAll(" ", `\ `)}`)
-      .join(",");
-    const field = Object.entries(fields)
-      .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
-      .join(",");
-    const line = `${measure}${tag ? `,` : ""}${tag} ${field} ${timestamp}`;
-    console.log(line);
-    const response = await fetch(ENDPOINT, {
-      method: "post",
-      body: line,
-      headers: {
-        Authorization: `Bearer ${USER_ID}:${API_KEY}`,
-        "Content-Type": "application/json",
-      },
-    });
+  if (!ENDPOINT || !USER_ID || !API_KEY) return;
 
-    if (!response.ok) {
-      const data = await response.text();
-      console.error(response.status, data);
-    }
+  // Cloudflare injects geolocation into the `cf` object on the native Request
+  const cf =
+    (req as unknown as Request & { cf?: Record<string, any> }).cf || {};
+  const vercelEdgeRegion = cf.colo || "";
+
+  const timestamp = Date.now() * 1_000_000;
+  const defaultTags = {
+    city: cf.city,
+    country: cf.country,
+    continent: cf.continent,
+    region: cf.region,
+    latitude: cf.latitude?.toString(),
+    longitude: cf.longitude?.toString(),
+    timezone: cf.timezone,
+    vercelEdgeRegion,
+    colo: vercelEdgeRegion.replace(/[0-9]+/, "").toUpperCase(),
+  };
+
+  const tag = Object.entries({ ...defaultTags, ...tags })
+    .filter(([, value]) => Boolean(value))
+    .map(([key, value]) => `${key}=${value.replaceAll(" ", `\\ `)}`)
+    .join(",");
+
+  const field = Object.entries(fields)
+    .map(([key, value]) => `${key}=${JSON.stringify(value)}`)
+    .join(",");
+
+  const line = `${measure}${tag ? `,` : ""}${tag} ${field} ${timestamp}`;
+  console.log(line);
+
+  const response = await fetch(ENDPOINT, {
+    method: "POST",
+    body: line,
+    headers: {
+      Authorization: `Bearer ${USER_ID}:${API_KEY}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const data = await response.text();
+    console.error(response.status, data);
   }
 }
