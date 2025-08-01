@@ -98,6 +98,9 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
       "Content-Type": "text/event-stream",
       Connection: "keep-alive",
       "Cache-Control": "no-cache",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
     },
   });
 }
