@@ -3,22 +3,18 @@ import { fecthData, fetchSomeData } from "../../lib/queries";
 import { sendAnalytics } from "../../lib/telemetry";
 
 export const config = {
-  runtime: "edge",
+  runtime: "edge", // required for Vercel Edge Function
 };
 
-const objToString = (obj: Object) => {
-  return JSON.stringify(obj);
-};
+const objToString = (obj: Object) => JSON.stringify(obj);
 
 export default async function handler(req: NextRequest, event: NextFetchEvent) {
-  // preheat the cache 🔥
-  await fetchSomeData(true);
-  // cache store is non-blocking, so give it a second
-  await new Promise((resolve) => setTimeout(resolve, 1_000));
+  // ✅ Non-blocking cache preheat
+  event.waitUntil(fetchSomeData(true));
 
   const timeout = AbortSignal.timeout(5_000);
-
   const encoder = new TextEncoder();
+
   const body = new ReadableStream({
     async start(controller) {
       await Promise.all([
@@ -70,8 +66,8 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
             objToString({
               event: "stop",
               data: {
-                withCache: withCache,
-                withoutCache: withoutCache,
+                withCache,
+                withoutCache,
                 ctx: {
                   geo: req.geo,
                 },
@@ -79,6 +75,8 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
             })
           )
         );
+
+        // ✅ Non-blocking analytics dispatch
         event.waitUntil(
           sendAnalytics(
             "accelerate.demo.stream",
@@ -86,8 +84,8 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
             req
           )
         );
+
         controller.close();
-        return [withCache, withoutCache];
       });
     },
   });
@@ -107,17 +105,12 @@ type TestRunResult = {
   cacheStatus: number;
 };
 
-/**
- * Runs the specified async function until the signal is aborted.
- * Each execution is timed, recorded, and emitted to the specified callback.
- * Resolves with the P50 duration.
- */
 async function p50(
   fn: () => Promise<number>,
   cb: (result: TestRunResult) => void,
   signal: AbortSignal
 ): Promise<number> {
-  const results = new Array<TestRunResult>();
+  const results: TestRunResult[] = [];
 
   while (!signal.aborted) {
     const [duration, cacheStatus] = await time(fn);
@@ -126,18 +119,6 @@ async function p50(
       cb({ duration, cacheStatus });
     }
   }
-
-  const { hit, miss } = results
-    .map((item) => item.cacheStatus)
-    .reduce(
-      (prev, curr) => {
-        return {
-          hit: prev.hit + (curr == 1 ? 1 : 0),
-          miss: prev.miss + (curr == 0 ? 1 : 0),
-        };
-      },
-      { hit: 0, miss: 0 }
-    );
 
   return (
     results
