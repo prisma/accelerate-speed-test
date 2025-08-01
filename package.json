@@ -1,13 +1,14 @@
 {
   "name": "speed-test",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate --no-engine && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --no-engine"
+    "postinstall": "prisma generate --no-engine",
+    "build-cf": "prisma generate --no-engine && npx @cloudflare/next-on-pages"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -36,6 +37,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.13",
     "@faker-js/faker": "^8.0.2",
     "@types/react-simple-maps": "^3.0.0",
     "@types/styled-components": "5.1.26",
