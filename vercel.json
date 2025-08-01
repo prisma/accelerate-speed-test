@@ -14,6 +14,15 @@
           "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
         }
       ]
+    },
+    {
+      "source": "/((?!api/|.*\\..*).*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://kit.fontawesome.com; style-src 'self' 'unsafe-inline'; font-src 'self' data: https://kit.fontawesome.com; connect-src 'self' https://vitals.vercel-insights.com;"
+        }
+      ]
     }
   ]
 }
