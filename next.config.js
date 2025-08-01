@@ -4,17 +4,17 @@ const nextConfig = {
   async headers() {
     return [
       {
-        // This applies the header to all routes in your app.
         source: "/:path*",
         headers: [
           {
             key: "Content-Security-Policy",
             value:
-              "default-src 'self'; " +
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://kit.fontawesome.com; " +
-              "style-src 'self' 'unsafe-inline'; " +
-              "font-src 'self' data: https://kit.fontawesome.com; " +
-              "connect-src 'self' https://vitals.vercel-insights.com;",
+              "default-src * 'unsafe-inline' 'unsafe-eval'; " +
+              "script-src * 'unsafe-inline' 'unsafe-eval'; " +
+              "connect-src * 'unsafe-inline'; " +
+              "img-src * data: blob: 'unsafe-inline'; " +
+              "frame-src *; " +
+              "style-src * 'unsafe-inline';",
           },
         ],
       },
