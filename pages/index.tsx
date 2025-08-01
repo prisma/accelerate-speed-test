@@ -166,20 +166,34 @@ export default function Home() {
 
   const [showWith, toggleWith] = useState<boolean>(false);
 
+
   useEffect(() => {
-    // warm up edge functions
     const abortController = new AbortController();
 
-    Promise.all([
-      fetch("/api/stream", { signal: abortController.signal }),
-      fetch("/api/stream", { signal: abortController.signal }),
-    ])
-      .then(() => { })
-      .catch(() => { });
-
-    return () => {
-      abortController.abort(); // Cancel the fetch requests
+    const warm = async () => {
+      try {
+        await Promise.all([
+          fetch("/api/stream", {
+            signal: abortController.signal,
+            headers: {
+              Connection: "keep-alive",
+            },
+          }),
+          fetch("/api/stream", {
+            signal: abortController.signal,
+            headers: {
+              Connection: "keep-alive",
+            },
+          }),
+        ]);
+      } catch (e) {
+        // silent fail
+      }
     };
+
+    warm();
+
+    return () => abortController.abort();
   }, []);
 
   async function runTest() {
