@@ -23,7 +23,17 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
     sendAnalytics("accelerate.demo.time", { withCache, withoutCache }, req)
   );
 
-  return NextResponse.json({ withCache, withoutCache });
+  return NextResponse.json(
+    { withCache, withoutCache },
+    {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    }
+  );
 }
 
 /**
@@ -42,7 +52,10 @@ async function p50(
       durations.push(duration);
     }
   }
-  return durations.sort((a, b) => a - b).at(Math.floor(durations.length * 0.5)) ?? NaN;
+  return (
+    durations.sort((a, b) => a - b).at(Math.floor(durations.length * 0.5)) ??
+    NaN
+  );
 }
 
 async function time(fn: () => Promise<unknown>): Promise<number> {

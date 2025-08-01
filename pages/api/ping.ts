@@ -24,6 +24,9 @@ export default async function handler(req: NextRequest, event: NextFetchEvent) {
         Pragma: "no-cache",
         Expires: "0",
         "Surrogate-Control": "no-store",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
       },
     }
   );
