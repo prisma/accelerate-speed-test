@@ -1,85 +1,85 @@
 /** Inter Regular */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url('../fonts/Inter-Regular.woff2');
+  src: url("../fonts/Inter-Regular.woff2");
 }
 
 /** Inter Medium */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-  src: url('../fonts/Inter-Medium.woff2');
+  src: url("../fonts/Inter-Medium.woff2");
 }
 
 /** Inter Italic */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 400;
   font-style: italic;
   font-display: swap;
-  src: url('../fonts/Inter-Italic.woff2');
+  src: url("../fonts/Inter-Italic.woff2");
 }
 
 /** Inter SemiBold */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url('../fonts/Inter-SemiBold.woff2');
+  src: url("../fonts/Inter-SemiBold.woff2");
 }
 
 /** Inter SemiBold Italic */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 600;
   font-style: italic;
   font-display: swap;
-  src: url('../fonts/Inter-SemiBoldItalic.woff2');
+  src: url("../fonts/Inter-SemiBoldItalic.woff2");
 }
 
 /** Inter Bold */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url('../fonts/Inter-Bold.woff2');
+  src: url("../fonts/Inter-Bold.woff2");
 }
 
 /** Inter Bold Italic */
 @font-face {
-  font-family: 'Inter';
+  font-family: "Inter";
   font-weight: 700;
   font-style: italic;
   font-display: swap;
-  src: url('../fonts/Inter-BoldItalic.woff2');
+  src: url("../fonts/Inter-BoldItalic.woff2");
 }
 
 /** Barlow Bold */
 @font-face {
-  font-family: 'Barlow';
+  font-family: "Barlow";
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-  src: url('../fonts/Barlow-Bold.woff2');
+  src: url("../fonts/Barlow-Bold.woff2");
 }
 
 @font-face {
-  font-family: 'JetBrainsMono';
+  font-family: "JetBrainsMono";
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url('../fonts/JetBrainsMono-Regular.woff2');
+  src: url("../fonts/JetBrainsMono-Regular.woff2");
 }
 
 html {
-  background-color: #1A202C;
+  background-color: #1a202c;
 }
 main {
   padding: 0 1rem;
@@ -169,8 +169,8 @@ section .badge {
 }
 
 .green-badge {
-  border: 1px solid #04C8BB;
-  font-family: 'Barlow',sans-serif;
+  border: 1px solid #04c8bb;
+  font-family: "Barlow", sans-serif;
   font-weight: 700;
   font-size: 11px;
   line-height: 11px;
@@ -178,7 +178,7 @@ section .badge {
   border-radius: 99px;
   padding: 6px 8px;
   text-transform: uppercase;
-  color: #04C8BB;
+  color: #04c8bb;
 }
 
 section .badge.green {
@@ -393,4 +393,8 @@ section.results table td[headers="location"] {
   100% {
     width: 90%;
   }
+}
+
+.socials img {
+  filter: brightness(0) invert(1);
 }

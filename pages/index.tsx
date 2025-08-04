@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { GithubIcon } from "../components/GithubIcon";
 import styles from "../styles/index.module.scss";
-
 export const dynamic = 'force-dynamic'
 
 const Animation = ({
@@ -64,8 +63,8 @@ const pageInfo = [
   },
   {
     title: "Deployment",
-    description: <div>Vercel Edge Functions</div>,
-    icon: "/vercel.svg",
+    description: <div>Cloudflare Pages</div>,
+    icon: "/icons/cloudflare.svg",
   },
   {
     title: "Database",
@@ -140,19 +139,23 @@ await prisma.linkOpen.count({
 const socialLinks = [
   {
     id: "discord",
-    link: "https://pris.ly/discord",
+    icon: '/icons/discord.svg',
+    link: "https://pris.ly/discord?utm_source=accelerate_speedtest",
   },
   {
     id: "github",
-    link: "https://github.com/prisma",
+    icon: '/icons/github.svg',
+    link: "https://pris.ly/github?utm_source=accelerate_speedtest",
   },
   {
     id: "twitter",
-    link: "https://twitter.com/prisma",
+    icon: '/icons/x.svg',
+    link: "https://pris.ly/x?utm_source=accelerate_speedtest",
   },
   {
     id: "youtube",
-    link: "https://www.youtube.com/c/PrismaData",
+    icon: '/icons/youtube.svg',
+    link: "https://pris.ly/youtube?utm_source=accelerate_speedtest",
   },
 ];
 
@@ -600,11 +603,13 @@ export default function Home() {
                 rel="noopener noreferrer"
                 key={e.id}
               >
-                <Icon
-                  color="currentColor"
-                  size="inherit"
-                  icon={`fa-brands fa-${e.id}`}
-                />
+                <div className={styles.squareIcon}>
+                  {typeof e.icon === "string" ? (
+                    <img src={e.icon} width="24px" height="24px" />
+                  ) : (
+                    e.icon
+                  )}
+                </div>
               </a>
             ))}
           </div>

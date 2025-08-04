@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate --no-engine",
-    "build-cf": "prisma generate --no-engine && npx @cloudflare/next-on-pages"
+    "build-cf": "prisma generate --no-engine && npx @cloudflare/next-on-pages",
+    "deploy-cf": "npm run build-cf && npx wrangler pages deploy .vercel/output/static",
+    "dev-cf": "npm run build-cf && npx wrangler pages dev .vercel/output/static"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
